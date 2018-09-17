@@ -1,4 +1,4 @@
-package camera1.themaestrochef.com.cameraapp;
+package camera1.themaestrochef.com.cameraapp.Adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +11,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import camera1.themaestrochef.com.cameraapp.R;
+import camera1.themaestrochef.com.cameraapp.Activiteis.ShowAppImages;
+
 /**
  * Created by ELSaghier on 7/25/2018.
  */
@@ -20,7 +23,7 @@ public class AppImagesAdapter extends RecyclerView.Adapter<AppImagesAdapter.view
     private ShowAppImages mContext;
     private ArrayList<String> mPath;
 
-    AppImagesAdapter(ShowAppImages mContext, ArrayList<String> mPath) {
+    public AppImagesAdapter(ShowAppImages mContext, ArrayList<String> mPath) {
         this.mContext = mContext;
         this.mPath = mPath;
     }

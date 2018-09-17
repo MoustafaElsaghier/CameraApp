@@ -1,4 +1,4 @@
-package camera1.themaestrochef.com.cameraapp;
+package camera1.themaestrochef.com.cameraapp.Activiteis;
 
 import android.Manifest;
 import android.content.Intent;
@@ -25,6 +25,8 @@ import com.otaliastudios.cameraview.GestureAction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
+import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.CapturePhotoUtils;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 

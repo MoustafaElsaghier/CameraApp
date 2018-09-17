@@ -1,4 +1,4 @@
-package camera1.themaestrochef.com.cameraapp;
+package camera1.themaestrochef.com.cameraapp.Activiteis;
 
 import android.database.Cursor;
 import android.provider.MediaStore;
@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import camera1.themaestrochef.com.cameraapp.Adapters.AppImagesAdapter;
+import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 import rx.functions.Action1;
 

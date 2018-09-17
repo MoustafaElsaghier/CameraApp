@@ -1,4 +1,4 @@
-package camera1.themaestrochef.com.cameraapp;
+package camera1.themaestrochef.com.cameraapp.Dialogs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
