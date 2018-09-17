@@ -11,8 +11,10 @@ import net.ralphpina.permissionsmanager.PermissionsManager;
 import net.ralphpina.permissionsmanager.PermissionsResult;
 
 import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 import rx.functions.Action1;
 
 public class ShowAppImages extends AppCompatActivity {
@@ -31,6 +33,8 @@ public class ShowAppImages extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_app_images);
         ButterKnife.bind(this);
+        UiUtilies.hideToolBar(this);
+        UiUtilies.hideSystemBar(this);
     }
 
     @Override
