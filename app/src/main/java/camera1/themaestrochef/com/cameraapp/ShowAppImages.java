@@ -31,6 +31,12 @@ public class ShowAppImages extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_app_images);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // call in onResume so that if he deletes image from gallery
         initAppImages();
     }
 
