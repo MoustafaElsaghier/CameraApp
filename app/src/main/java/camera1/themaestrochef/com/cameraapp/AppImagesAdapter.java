@@ -1,0 +1,55 @@
+package camera1.themaestrochef.com.cameraapp;
+
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
+
+/**
+ * Created by ELSaghier on 7/25/2018.
+ */
+
+public class AppImagesAdapter extends RecyclerView.Adapter<AppImagesAdapter.viewHolder> {
+
+    private ShowAppImages mContext;
+    private ArrayList<String> mPath;
+
+    AppImagesAdapter(ShowAppImages mContext, ArrayList<String> mPath) {
+        this.mContext = mContext;
+        this.mPath = mPath;
+    }
+
+    @NonNull
+    @Override
+    public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new viewHolder(LayoutInflater.from(mContext).inflate(R.layout.image_item, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull viewHolder holder, int position) {
+        Glide.with(mContext).load(mPath.get(position)).into(holder.imageView);
+    }
+
+    @Override
+    public int getItemCount() {
+        if (mPath == null)
+            return 0;
+        return mPath.size();
+    }
+
+    class viewHolder extends RecyclerView.ViewHolder {
+        private ImageView imageView;
+        viewHolder(View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.app_image);
+        }
+    }
+
+}
+
