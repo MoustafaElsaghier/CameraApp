@@ -38,7 +38,7 @@ public class ShowAppImages extends AppCompatActivity {
         ArrayList<String> imagesPaths = getAllShownImagesPath();
         adapter = new AppImagesAdapter(this, imagesPaths);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
         appImages.setLayoutManager(layoutManager);
         appImages.setAdapter(adapter);
     }
