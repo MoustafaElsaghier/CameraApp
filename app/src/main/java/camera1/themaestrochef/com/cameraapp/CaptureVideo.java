@@ -54,10 +54,10 @@ public class CaptureVideo extends AppCompatActivity {
     ImageView lastImage;
 
     @BindView(R.id.pause_video)
-    FloatingActionButton pauseVideo;
+    ImageView pauseVideo;
 
     @BindView(R.id.take_video)
-    FloatingActionButton takeVideo;
+    ImageView takeVideo;
 
 
     private static final int REQUEST_CAMERA_PERMISSION = 1;
@@ -234,7 +234,7 @@ public class CaptureVideo extends AppCompatActivity {
 
     @OnClick(R.id.take_video)
     public void captureVideo() {
-        takeVideo.setVisibility(View.INVISIBLE);
+        takeVideo.setVisibility(View.GONE);
         pauseVideo.setVisibility(View.VISIBLE);
 
 
@@ -294,6 +294,7 @@ public class CaptureVideo extends AppCompatActivity {
         Intent intent = new Intent(this, ShowAppVideos.class);
         startActivity(intent);
     }
+
 
 
 }

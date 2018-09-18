@@ -44,7 +44,8 @@ public class ShowAppVideos extends AppCompatActivity {
 
     private void init(){
 
-        RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(getApplicationContext(), 4);
+        RecyclerView.LayoutManager recyclerViewLayoutManager
+                = new GridLayoutManager(getApplicationContext(), 4);
         appVideo.setLayoutManager(recyclerViewLayoutManager);
 
         fn_checkpermission();
