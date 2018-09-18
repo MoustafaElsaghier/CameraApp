@@ -23,7 +23,7 @@ public class AppImagesAdapter extends RecyclerView.Adapter<AppImagesAdapter.view
     private ShowAppImages mContext;
     private ArrayList<String> mPath;
 
-    public AppImagesAdapter(ShowAppImages mContext, ArrayList<String> mPath) {
+    AppImagesAdapter(ShowAppImages mContext, ArrayList<String> mPath) {
         this.mContext = mContext;
         this.mPath = mPath;
     }

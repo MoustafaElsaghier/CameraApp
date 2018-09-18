@@ -12,6 +12,8 @@ import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 
 public class ImagePreviewActivity extends AppCompatActivity {
 
+    @BindView(R.id.app_image)
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +22,7 @@ public class ImagePreviewActivity extends AppCompatActivity {
         UiUtilies.hideSystemBar(this);
         UiUtilies.hideToolBar(this);
 
+        String mPath = getIntent().getStringExtra("imagePath");
+        Glide.with(this).load(mPath).into(imageView);
     }
 }
