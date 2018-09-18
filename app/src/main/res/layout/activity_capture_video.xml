@@ -54,14 +54,14 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="34dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/pause_video"
+        app:layout_constraintEnd_toStartOf="@+id/pause_video"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round"
+        app:layout_constraintTop_toTopOf="@+id/pause_video"
+        app:srcCompat="@drawable/ic_camera"
         tools:ignore="ContentDescription" />
 
     <ImageView
