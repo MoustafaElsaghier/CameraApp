@@ -129,7 +129,7 @@ public class CaptureVideo extends AppCompatActivity {
                             R.string.camera_permission_not_granted)
                     .show(getSupportFragmentManager(), FRAGMENT_DIALOG);
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO},
                     REQUEST_CAMERA_PERMISSION);
         }
     }
