@@ -115,25 +115,24 @@ public class MainActivity extends AppCompatActivity {
 
     private void saveImg(final byte[] jpeg) {
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        CameraUtils.decodeBitmap(jpeg, new CameraUtils.BitmapCallback() {
             @Override
-            public void run() {
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
-
-                CameraUtils.decodeBitmap(jpeg, new CameraUtils.BitmapCallback() {
+            public void onBitmapReady(final Bitmap bitmap) {
+                handler.postDelayed(new Runnable() {
                     @Override
-                    public void onBitmapReady(Bitmap bitmap) {
+                    public void run() {
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                     == PackageManager.PERMISSION_GRANTED)
                                 CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
                             else
                                 CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
-                        Toast.makeText(MainActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }, 20);
             }
-        }, 20);
+        });
+
     }
 
     @Override
