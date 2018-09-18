@@ -12,10 +12,13 @@ import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 
 public class ImagePreviewActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_preview);
+        UiUtilies.hideSystemBar(this);
+        UiUtilies.hideToolBar(this);
 
     }
 }
