@@ -1,4 +1,5 @@
 package camera1.themaestrochef.com.cameraapp.Utilities;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,6 +16,7 @@ import android.provider.MediaStore.Images;
 /**
  * Android internals have been modified to store images in the media folder with
  * the correct date meta data
+ *
  * @author samuelkirton
  */
 public class CapturePhotoUtils {
@@ -23,12 +25,13 @@ public class CapturePhotoUtils {
      * A copy of the Android internals  insertImage method, this method populates the
      * meta data with DATE_ADDED and DATE_TAKEN. This fixes a common problem where media
      * that is inserted manually gets saved at the end of the gallery (because date is not populated).
+     *
      * @see android.provider.MediaStore.Images.Media#insertImage(ContentResolver, Bitmap, String, String)
      */
     public static String insertImage(ContentResolver cr,
-                                           Bitmap source,
-                                           String title,
-                                           String description) {
+                                     Bitmap source,
+                                     String title,
+                                     String description) {
 
         ContentValues values = new ContentValues();
         values.put(Images.Media.TITLE, title);
@@ -80,9 +83,10 @@ public class CapturePhotoUtils {
      * A copy of the Android internals StoreThumbnail method, it used with the insertImage to
      * populate the android.provider.MediaStore.Images.Media#insertImage with all the correct
      * meta data. The StoreThumbnail method is private so it must be duplicated here.
+     *
      * @see android.provider.MediaStore.Images.Media (StoreThumbnail private method)
      */
-    private static void storeThumbnail(
+    private static Bitmap storeThumbnail(
             ContentResolver cr,
             Bitmap source,
             long id,
@@ -103,10 +107,10 @@ public class CapturePhotoUtils {
         );
 
         ContentValues values = new ContentValues(4);
-        values.put(Images.Thumbnails.KIND,kind);
-        values.put(Images.Thumbnails.IMAGE_ID,(int)id);
-        values.put(Images.Thumbnails.HEIGHT,thumb.getHeight());
-        values.put(Images.Thumbnails.WIDTH,thumb.getWidth());
+        values.put(Images.Thumbnails.KIND, kind);
+        values.put(Images.Thumbnails.IMAGE_ID, (int) id);
+        values.put(Images.Thumbnails.HEIGHT, thumb.getHeight());
+        values.put(Images.Thumbnails.WIDTH, thumb.getWidth());
 
         Uri url = cr.insert(Images.Thumbnails.EXTERNAL_CONTENT_URI, values);
 
@@ -114,8 +118,11 @@ public class CapturePhotoUtils {
             OutputStream thumbOut = cr.openOutputStream(url);
             thumb.compress(Bitmap.CompressFormat.JPEG, 100, thumbOut);
             thumbOut.close();
+            return thumb;
         } catch (FileNotFoundException ex) {
+            return null;
         } catch (IOException ex) {
+            return null;
         }
     }
 }

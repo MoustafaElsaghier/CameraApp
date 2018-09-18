@@ -11,9 +11,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraUtils;
 import com.otaliastudios.cameraview.CameraView;
@@ -28,8 +30,13 @@ import butterknife.OnClick;
 import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.CapturePhotoUtils;
+import camera1.themaestrochef.com.cameraapp.Utilities.ImageHelper;
 import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
+
+import static camera1.themaestrochef.com.cameraapp.Utilities.Constants.REQUEST_CAMERA_PERMISSION;
+import static camera1.themaestrochef.com.cameraapp.Utilities.Constants.REQUEST_READ_STORAGE_PERMISSION;
+import static camera1.themaestrochef.com.cameraapp.Utilities.Constants.REQUEST_WRITE_STORAGE_PERMISSION;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,10 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.last_captured_image)
     ImageView lastImage;
-
-    private static final int REQUEST_CAMERA_PERMISSION = 1;
-    private static final int REQUEST_WRITE_STORAGE_PERMISSION = 2;
-    private static final int REQUEST_READ_STORAGE_PERMISSION = 3;
 
     private static final String FRAGMENT_DIALOG = "dialog";
 
@@ -124,10 +127,13 @@ public class MainActivity extends AppCompatActivity {
 //                Bitmap bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                    == PackageManager.PERMISSION_GRANTED)
-                                CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
-                            else
-                                CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+                                    == PackageManager.PERMISSION_GRANTED) {
+                                String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+                                Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                            } else {
+                                String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+                                Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                            }
                     }
                 }, 20);
             }
@@ -138,6 +144,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        //get last captured image
+        Bitmap bitmap = ImageHelper.getLastTakenImage(this);
+        if (bitmap != null)
+            lastImage.setImageBitmap(bitmap);
+        else
+            lastImage.setVisibility(View.GONE);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
