@@ -1,6 +1,8 @@
 package camera1.themaestrochef.com.cameraapp.Activities;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -53,7 +55,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.last_captured_image)
     ImageView lastImage;
 
-    private static final String FRAGMENT_DIALOG = "dialog";
+    public static Activity activity;
+
+    public static final String FRAGMENT_DIALOG = "dialog";
 
     private static final Flash[] FLASH_OPTIONS = {
             Flash.AUTO,
@@ -73,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        activity=this;
         ButterKnife.bind(this);
 
         //Hide notificationBar

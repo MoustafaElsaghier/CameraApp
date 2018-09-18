@@ -240,7 +240,7 @@ public class CaptureVideo extends AppCompatActivity {
 
     @OnClick(R.id.take_video)
     public void captureVideo() {
-        takeVideo.setVisibility(View.GONE);
+        takeVideo.setVisibility(View.INVISIBLE);
         pauseVideo.setVisibility(View.VISIBLE);
 
 
@@ -253,10 +253,11 @@ public class CaptureVideo extends AppCompatActivity {
     @OnClick(R.id.pause_video)
     public void stopVideo() {
         takeVideo.setVisibility(View.VISIBLE);
-        pauseVideo.setVisibility(View.GONE);
+        pauseVideo.setVisibility(View.INVISIBLE);
         if (mCameraView != null) {
             mCameraView.stopCapturingVideo();
         }
+
     }
 
     @OnClick(R.id.switch_flash)
@@ -301,7 +302,7 @@ public class CaptureVideo extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    @OnClick(R.id.imageView)
     public void openCamera(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
