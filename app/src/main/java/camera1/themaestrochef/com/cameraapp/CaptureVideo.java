@@ -19,6 +19,7 @@ import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 
 public class CaptureVideo extends AppCompatActivity {

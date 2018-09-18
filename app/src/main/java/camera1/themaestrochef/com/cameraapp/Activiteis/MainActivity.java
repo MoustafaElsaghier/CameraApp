@@ -34,6 +34,10 @@ import camera1.themaestrochef.com.cameraapp.Utilities.ImageHelper;
 import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 
+import static camera1.themaestrochef.com.cameraapp.Utilities.Constants.REQUEST_CAMERA_PERMISSION;
+import static camera1.themaestrochef.com.cameraapp.Utilities.Constants.REQUEST_READ_STORAGE_PERMISSION;
+import static camera1.themaestrochef.com.cameraapp.Utilities.Constants.REQUEST_WRITE_STORAGE_PERMISSION;
+
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.camera)
@@ -47,10 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.last_captured_image)
     ImageView lastImage;
-
-    private static final int REQUEST_CAMERA_PERMISSION = 1;
-    private static final int REQUEST_WRITE_STORAGE_PERMISSION = 2;
-    private static final int REQUEST_READ_STORAGE_PERMISSION = 3;
 
     private static final String FRAGMENT_DIALOG = "dialog";
 
