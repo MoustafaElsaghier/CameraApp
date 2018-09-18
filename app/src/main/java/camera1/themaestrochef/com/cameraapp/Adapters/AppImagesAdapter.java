@@ -1,5 +1,6 @@
 package camera1.themaestrochef.com.cameraapp.Adapters;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import camera1.themaestrochef.com.cameraapp.Activiteis.ImagePreviewActivity;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Activiteis.ShowAppImages;
 
@@ -23,7 +25,7 @@ public class AppImagesAdapter extends RecyclerView.Adapter<AppImagesAdapter.view
     private ShowAppImages mContext;
     private ArrayList<String> mPath;
 
-    public AppImagesAdapter(ShowAppImages mContext, ArrayList<String> mPath) {
+    AppImagesAdapter(ShowAppImages mContext, ArrayList<String> mPath) {
         this.mContext = mContext;
         this.mPath = mPath;
     }
@@ -51,6 +53,14 @@ public class AppImagesAdapter extends RecyclerView.Adapter<AppImagesAdapter.view
         viewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.app_image);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, ImagePreviewActivity.class);
+                    intent.putExtra("imagePath", mPath.get(getAdapterPosition()));
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 
