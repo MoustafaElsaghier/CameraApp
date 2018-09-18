@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -23,6 +25,8 @@ import com.otaliastudios.cameraview.GestureAction;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -81,12 +85,16 @@ public class CaptureVideo extends AppCompatActivity {
                 @Override
                 public void onVideoTaken(final File video) {
                     super.onVideoTaken(video);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            saveVideo(video);
-                        }
-                    }).start();
+                    String s = video.getName();
+                    String s1 = video.getAbsolutePath();
+                    String s2 = video.getPath();
+                    long s3 = video.getTotalSpace();
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            saveVideo(video);
+//                        }
+//                    }).start();
                 }
             });
         }
@@ -94,7 +102,7 @@ public class CaptureVideo extends AppCompatActivity {
     }
 
     private void initIcons() {
-        mCurrentFlash = SharedPreferencesUtilities.getFlashIndex(this);
+        mCurrentFlash = SharedPreferencesUtilities.getFlashIndex(this) % 2;
         flashIcon.setImageResource(FLASH_ICONS[mCurrentFlash]);
         mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
 
@@ -183,7 +191,8 @@ public class CaptureVideo extends AppCompatActivity {
     @OnClick(R.id.take_video)
     public void captureVideo() {
         if (mCameraView != null) {
-            mCameraView.startCapturingVideo(getTempFile(this, "video"));
+            mCameraView.startCapturingVideo(new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DCIM).getAbsolutePath() + "/Camera/VID_" + System.currentTimeMillis() / 1000 + "_.mp4"));
         }
     }
 
@@ -247,4 +256,5 @@ public class CaptureVideo extends AppCompatActivity {
         Intent intent = new Intent(this, ShowAppImages.class);
         startActivity(intent);
     }
+
 }

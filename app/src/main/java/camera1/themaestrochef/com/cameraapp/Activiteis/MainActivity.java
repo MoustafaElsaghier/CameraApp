@@ -23,6 +23,7 @@ import com.otaliastudios.cameraview.Facing;
 import com.otaliastudios.cameraview.Flash;
 import com.otaliastudios.cameraview.Gesture;
 import com.otaliastudios.cameraview.GestureAction;
+import com.otaliastudios.cameraview.SessionType;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,12 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     super.onPictureTaken(jpeg);
 //                    saveImg(jpeg);
 //                    new PhotoProcessor(jpeg, MainActivity.this);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            saveImg(jpeg);
-                        }
-                    }).start();
+                    saveImg(jpeg);
                 }
             });
         }
@@ -119,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     private void saveImg(final byte[] jpeg) {
         final Handler handler = new Handler();
         CameraUtils.decodeBitmap(jpeg, new CameraUtils.BitmapCallback() {
+
             @Override
             public void onBitmapReady(final Bitmap bitmap) {
                 handler.postDelayed(new Runnable() {
