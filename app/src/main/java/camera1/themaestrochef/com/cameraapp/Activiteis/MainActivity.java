@@ -28,6 +28,7 @@ import butterknife.OnClick;
 import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.CapturePhotoUtils;
+import camera1.themaestrochef.com.cameraapp.Utilities.ImageHelper;
 import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 
