@@ -3,19 +3,23 @@ package camera1.themaestrochef.com.cameraapp;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.Facing;
@@ -24,17 +28,14 @@ import com.otaliastudios.cameraview.Gesture;
 import com.otaliastudios.cameraview.GestureAction;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import camera1.themaestrochef.com.cameraapp.Activiteis.ShowAppImages;
-import camera1.themaestrochef.com.cameraapp.Activiteis.ShowAppVideos;
-import camera1.themaestrochef.com.cameraapp.Activities.ShowAppImages;
+import camera1.themaestrochef.com.cameraapp.Activities.ShowAppVideos;
 import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
+import camera1.themaestrochef.com.cameraapp.Utilities.Model_Video;
 import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 
@@ -64,6 +65,8 @@ public class CaptureVideo extends AppCompatActivity {
     private static final int REQUEST_READ_STORAGE_PERMISSION = 3;
     private static final int REQUEST_USE_MICROPHONE_PERMISSION = 4;
 
+
+    ArrayList al_video = new ArrayList<Model_Video>();
 
     private static final String FRAGMENT_DIALOG = "dialog";
 
@@ -154,6 +157,9 @@ public class CaptureVideo extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (fn_video() != null)
+            Glide.with(this).load(fn_video().getStr_thumb()).into(lastImage);
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
             mCameraView.start();
@@ -180,6 +186,45 @@ public class CaptureVideo extends AppCompatActivity {
         mCameraView.stop();
     }
 
+    public Model_Video fn_video() {
+
+        int int_position = 0;
+        Uri uri;
+        Cursor cursor;
+        int column_index_data, column_index_folder_name, column_id, thum;
+
+        String absolutePathOfImage = null;
+        uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+
+        String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME, MediaStore.Video.Media._ID, MediaStore.Video.Thumbnails.DATA};
+
+        final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+        cursor = getApplicationContext().getContentResolver().query(uri, projection, null, null, orderBy + " DESC");
+
+        column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        column_index_folder_name = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
+        column_id = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID);
+        thum = cursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
+
+        while (cursor.moveToFirst()) {
+            absolutePathOfImage = cursor.getString(column_index_data);
+            Log.e("Column", absolutePathOfImage);
+            Log.e("Folder", cursor.getString(column_index_folder_name));
+            Log.e("column_id", cursor.getString(column_id));
+            Log.e("thum", cursor.getString(thum));
+
+            Model_Video obj_model = new Model_Video();
+            obj_model.setBoolean_selected(false);
+            obj_model.setStr_path(absolutePathOfImage);
+            obj_model.setStr_thumb(cursor.getString(thum));
+
+            return obj_model;
+
+        }
+
+        return null;
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -189,8 +234,8 @@ public class CaptureVideo extends AppCompatActivity {
 
     @OnClick(R.id.take_video)
     public void captureVideo() {
-            takeVideo.setVisibility(View.INVISIBLE);
-            pauseVideo.setVisibility(View.VISIBLE);
+        takeVideo.setVisibility(View.INVISIBLE);
+        pauseVideo.setVisibility(View.VISIBLE);
 
 
         if (mCameraView != null) {
@@ -241,15 +286,14 @@ public class CaptureVideo extends AppCompatActivity {
             pinchIcon.setImageResource(android.R.drawable.star_big_on);
             isPunchable = true;
         }
-            SharedPreferencesUtilities.setPinch(this, isPunchable);
+        SharedPreferencesUtilities.setPinch(this, isPunchable);
     }
 
     @OnClick(R.id.last_captured_video)
     public void showImages() {
-        Intent intent = new Intent(this, ShowAppImages.class);
+        Intent intent = new Intent(this, ShowAppVideos.class);
         startActivity(intent);
     }
-
 
 
 }

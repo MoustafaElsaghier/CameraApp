@@ -13,19 +13,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import net.ralphpina.permissionsmanager.PermissionsManager;
-import net.ralphpina.permissionsmanager.PermissionsResult;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import camera1.themaestrochef.com.cameraapp.Adapters.AppImagesAdapter;
 import camera1.themaestrochef.com.cameraapp.Adapters.VideoAdapter;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.Model_Video;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
-import rx.functions.Action1;
 
 
 public class ShowAppVideos extends AppCompatActivity {
@@ -49,7 +44,7 @@ public class ShowAppVideos extends AppCompatActivity {
 
     private void init(){
 
-        RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
+        RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(getApplicationContext(), 4);
         appVideo.setLayoutManager(recyclerViewLayoutManager);
 
         fn_checkpermission();

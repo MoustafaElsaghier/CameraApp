@@ -5,16 +5,16 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.MediaController;
-import android.widget.TextView;
 import android.widget.VideoView;
 import camera1.themaestrochef.com.cameraapp.R;
+import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 
 
-
-public class VideoPreviewActivity extends Activity {
+public class VideoPreviewActivity extends AppCompatActivity {
 
     private VideoView videoView;
 
@@ -22,6 +22,8 @@ public class VideoPreviewActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_preview);
+        UiUtilies.hideSystemBar(this);
+        UiUtilies.hideToolBar(this);
         videoView = findViewById(R.id.video);
         videoView.setOnClickListener(new View.OnClickListener() {
             @Override
