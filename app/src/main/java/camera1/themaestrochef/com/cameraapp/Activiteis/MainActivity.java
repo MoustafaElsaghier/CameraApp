@@ -28,6 +28,7 @@ import butterknife.OnClick;
 import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.CapturePhotoUtils;
+import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 
 public class MainActivity extends AppCompatActivity {
@@ -74,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Hide notificationBar
         UiUtilies.hideSystemBar(this);
+
+        initIcons();
+
         if (mCameraView != null) {
             mCameraView.addCameraListener(new CameraListener() {
                 @Override
@@ -90,6 +94,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void initIcons() {
+        mCurrentFlash = SharedPreferencesUtilities.getFlashIndex(this);
+        flashIcon.setImageResource(FLASH_ICONS[mCurrentFlash]);
+        mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
+
     }
 
     private void saveImg(final byte[] jpeg) {
@@ -196,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
             mCurrentFlash = (mCurrentFlash + 1) % FLASH_OPTIONS.length;
             flashIcon.setImageResource(FLASH_ICONS[mCurrentFlash]);
             mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
+            SharedPreferencesUtilities.setFlash(this, mCurrentFlash);
         }
     }
 
@@ -215,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    boolean isPunchable = true;
+    boolean isPunchable;
 
     @OnClick(R.id.pinch_image)
     public void switchPinch() {
@@ -224,10 +236,12 @@ public class MainActivity extends AppCompatActivity {
 
             mCameraView.mapGesture(Gesture.PINCH, GestureAction.NONE); // Pinch to zoom!
             isPunchable = false;
+            SharedPreferencesUtilities.setPinch(this, isPunchable);
         } else {
             mCameraView.mapGesture(Gesture.PINCH, GestureAction.ZOOM); // Pinch to zoom!
             pinchIcon.setImageResource(android.R.drawable.star_big_on);
             isPunchable = true;
+            SharedPreferencesUtilities.setPinch(this, isPunchable);
         }
     }
 

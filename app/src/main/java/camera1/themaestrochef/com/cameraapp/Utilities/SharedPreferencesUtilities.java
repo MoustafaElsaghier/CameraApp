@@ -44,7 +44,7 @@ public class SharedPreferencesUtilities {
         return preferences.getInt(flashKey, 0);
     }
 
-    public static boolean initSaredPref(Context context) {
+    public static boolean getPinchValue(Context context) {
         initVars(context);
         return preferences.getBoolean(pinchKey, true);
 
