@@ -1,4 +1,4 @@
-package camera1.themaestrochef.com.cameraapp.Activiteis;
+package camera1.themaestrochef.com.cameraapp.Activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -23,11 +23,11 @@ import com.otaliastudios.cameraview.Facing;
 import com.otaliastudios.cameraview.Flash;
 import com.otaliastudios.cameraview.Gesture;
 import com.otaliastudios.cameraview.GestureAction;
-import com.otaliastudios.cameraview.SessionType;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import camera1.themaestrochef.com.cameraapp.CaptureVideo;
 import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.CapturePhotoUtils;
@@ -260,12 +260,18 @@ public class MainActivity extends AppCompatActivity {
             pinchIcon.setImageResource(android.R.drawable.star_big_on);
             isPunchable = true;
         }
-            SharedPreferencesUtilities.setPinch(this, isPunchable);
+        SharedPreferencesUtilities.setPinch(this, isPunchable);
     }
 
     @OnClick(R.id.last_captured_image)
     public void showImages() {
         Intent intent = new Intent(this, ShowAppImages.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.imageView)
+    public void openVideo() {
+        Intent intent = new Intent(this, CaptureVideo.class);
         startActivity(intent);
     }
 }

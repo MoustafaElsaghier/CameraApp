@@ -1,11 +1,9 @@
 package camera1.themaestrochef.com.cameraapp;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -24,14 +22,11 @@ import com.otaliastudios.cameraview.Gesture;
 import com.otaliastudios.cameraview.GestureAction;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import camera1.themaestrochef.com.cameraapp.Activiteis.ShowAppImages;
+import camera1.themaestrochef.com.cameraapp.Activities.ShowAppImages;
 import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
 import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;

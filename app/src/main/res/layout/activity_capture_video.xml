@@ -17,6 +17,7 @@
         app:cameraGesturePinch="zoom"
         app:cameraGestureTap="focusWithMarker"
         app:cameraSessionType="video"
+        app:cameraVideoQuality="max720p"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

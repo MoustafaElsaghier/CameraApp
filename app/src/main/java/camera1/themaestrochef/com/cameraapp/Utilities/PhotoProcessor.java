@@ -10,7 +10,7 @@ import android.os.Build;
 
 import com.otaliastudios.cameraview.CameraUtils;
 
-import camera1.themaestrochef.com.cameraapp.Activiteis.MainActivity;
+import camera1.themaestrochef.com.cameraapp.Activities.MainActivity;
 
 public class PhotoProcessor extends AsyncTask<Void, Void, String> {
     private byte[] jpeg;
