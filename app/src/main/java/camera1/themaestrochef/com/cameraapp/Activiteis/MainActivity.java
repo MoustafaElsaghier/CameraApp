@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraUtils;
 import com.otaliastudios.cameraview.CameraView;
@@ -126,10 +127,13 @@ public class MainActivity extends AppCompatActivity {
 //                Bitmap bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                    == PackageManager.PERMISSION_GRANTED)
-                                CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
-                            else
-                                CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+                                    == PackageManager.PERMISSION_GRANTED) {
+                                String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+                                Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                            } else {
+                                String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+                                Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                            }
                     }
                 }, 20);
             }
