@@ -48,10 +48,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.viewHolder> 
 
     class viewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView imageView;
+        private ImageView imageView1;
 
         public viewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.app_video);
+            imageView1 = itemView.findViewById(R.id.imageView2);
             itemView.setOnClickListener(this);
         }
 
