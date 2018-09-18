@@ -162,10 +162,12 @@ public class CaptureVideo extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Model_Video modelVideo = fn_video();
-        if (modelVideo != null)
-            Glide.with(this).load(modelVideo.getStr_thumb()).into(lastImage);
-
+        if (ContextCompat.checkSelfPermission
+                (this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            Model_Video modelVideo = fn_video();
+            if (modelVideo != null)
+                Glide.with(this).load(modelVideo.getStr_thumb()).into(lastImage);
+        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
             mCameraView.start();
@@ -194,12 +196,11 @@ public class CaptureVideo extends AppCompatActivity {
 
     public Model_Video fn_video() {
 
-        int int_position = 0;
         Uri uri;
         Cursor cursor;
         int column_index_data, column_index_folder_name, column_id, thum;
 
-        String absolutePathOfImage = null;
+        String absolutePathOfImage;
         uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
 
         String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME, MediaStore.Video.Media._ID, MediaStore.Video.Thumbnails.DATA};

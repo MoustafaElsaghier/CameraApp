@@ -2,6 +2,7 @@ package camera1.themaestrochef.com.cameraapp.Utilities;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import camera1.themaestrochef.com.cameraapp.Activities.MainActivity;
 
@@ -56,13 +58,7 @@ public class ImageHelper {
                 MediaStore.Images.ImageColumns.DATE_TAKEN,
                 MediaStore.Images.ImageColumns.MIME_TYPE
         };
-        if (ContextCompat.checkSelfPermission(context,Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(MainActivity.activity, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_CAMERA_PERMISSION);
-
-        }
         final Cursor cursor = context.getContentResolver()
                 .query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null,
                         null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
@@ -78,5 +74,29 @@ public class ImageHelper {
         return null;
     }
 
+    public static String saveToInternalStorage(Context context, Bitmap bitmapImage) {
+//        ContextWrapper cw = new ContextWrapper(context);
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = context.getFilesDir();
+//        cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mPath = new File(directory, "IMG_" + System.currentTimeMillis() / 1000 + "_.jpg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mPath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return directory.getAbsolutePath();
+    }
 
 }
