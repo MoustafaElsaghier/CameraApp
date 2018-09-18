@@ -1,7 +1,10 @@
 package camera1.themaestrochef.com.cameraapp;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -13,12 +16,20 @@ import android.widget.Toast;
 
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraView;
+import com.otaliastudios.cameraview.Facing;
 import com.otaliastudios.cameraview.Flash;
+import com.otaliastudios.cameraview.Gesture;
+import com.otaliastudios.cameraview.GestureAction;
 
 import java.io.File;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import camera1.themaestrochef.com.cameraapp.Activiteis.ShowAppImages;
+import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
+import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 
 public class CaptureVideo extends AppCompatActivity {
@@ -32,7 +43,7 @@ public class CaptureVideo extends AppCompatActivity {
     @BindView(R.id.pinch_image)
     ImageView pinchIcon;
 
-    @BindView(R.id.last_captured_image)
+    @BindView(R.id.last_captured_video)
     ImageView lastImage;
 
     private static final int REQUEST_CAMERA_PERMISSION = 1;
@@ -64,6 +75,7 @@ public class CaptureVideo extends AppCompatActivity {
         ButterKnife.bind(this);
         //Hide notificationBar
         UiUtilies.hideSystemBar(this);
+        initIcons();
         if (mCameraView != null) {
             mCameraView.addCameraListener(new CameraListener() {
                 @Override
@@ -72,13 +84,33 @@ public class CaptureVideo extends AppCompatActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            //saveVideo(video);
+                            saveVideo(video);
                         }
                     }).start();
                 }
             });
         }
 
+    }
+
+    private void initIcons() {
+        mCurrentFlash = SharedPreferencesUtilities.getFlashIndex(this);
+        flashIcon.setImageResource(FLASH_ICONS[mCurrentFlash]);
+        mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
+
+        isPunchable = SharedPreferencesUtilities.getPinchValue(this);
+        if (mCameraView != null) {
+            if (isPunchable) {
+                mCameraView.mapGesture(Gesture.PINCH, GestureAction.ZOOM);
+                pinchIcon.setImageResource(android.R.drawable.star_big_on);
+            } else {
+                mCameraView.mapGesture(Gesture.PINCH, GestureAction.NONE);
+                pinchIcon.setImageResource(android.R.drawable.star_big_off);
+            }
+        }
+    }
+
+    private void saveVideo(File file) {
     }
 
     @Override
@@ -124,12 +156,13 @@ public class CaptureVideo extends AppCompatActivity {
                     .newInstance(R.string.camera_permission_confirmation,
                             new String[]{Manifest.permission.CAMERA,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE},
+                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO},
+
                             REQUEST_CAMERA_PERMISSION,
                             R.string.camera_permission_not_granted)
                     .show(getSupportFragmentManager(), FRAGMENT_DIALOG);
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO},
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
                     REQUEST_CAMERA_PERMISSION);
         }
     }
@@ -144,5 +177,74 @@ public class CaptureVideo extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mCameraView.destroy();
+    }
+
+
+    @OnClick(R.id.take_video)
+    public void captureVideo() {
+        if (mCameraView != null) {
+            mCameraView.startCapturingVideo(getTempFile(this, "video"));
+        }
+    }
+
+    private File getTempFile(Context context, String url) {
+        File file = null;
+        try {
+            String fileName = Uri.parse(url).getLastPathSegment();
+            file = File.createTempFile(fileName, null, context.getCacheDir());
+        } catch (IOException e) {
+            // Error while creating file
+        }
+        return file;
+    }
+
+    @OnClick(R.id.pause_video)
+    public void stopVideo() {
+        if (mCameraView != null) {
+            mCameraView.stopCapturingVideo();
+        }
+    }
+
+    @OnClick(R.id.switch_flash)
+    public void switchFlash() {
+        if (mCameraView != null) {
+            mCurrentFlash = (mCurrentFlash + 1) % FLASH_OPTIONS.length;
+            flashIcon.setImageResource(FLASH_ICONS[mCurrentFlash]);
+            mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
+            SharedPreferencesUtilities.setFlash(this, mCurrentFlash);
+        }
+    }
+
+    @OnClick(R.id.switch_camera)
+    public void switchCamera() {
+        if (mCameraView != null) {
+            Facing facing = mCameraView.getFacing();
+            mCameraView.setFacing(facing == Facing.FRONT ?
+                    Facing.BACK : Facing.FRONT);
+        }
+    }
+
+    boolean isPunchable;
+
+    @OnClick(R.id.pinch_image)
+    public void switchPinch() {
+        if (isPunchable) {
+            pinchIcon.setImageResource(android.R.drawable.star_big_off);
+
+            mCameraView.mapGesture(Gesture.PINCH, GestureAction.NONE); // Pinch to zoom!
+            isPunchable = false;
+            SharedPreferencesUtilities.setPinch(this, isPunchable);
+        } else {
+            mCameraView.mapGesture(Gesture.PINCH, GestureAction.ZOOM); // Pinch to zoom!
+            pinchIcon.setImageResource(android.R.drawable.star_big_on);
+            isPunchable = true;
+            SharedPreferencesUtilities.setPinch(this, isPunchable);
+        }
+    }
+
+    @OnClick(R.id.last_captured_video)
+    public void showImages() {
+        Intent intent = new Intent(this, ShowAppImages.class);
+        startActivity(intent);
     }
 }

@@ -16,6 +16,7 @@
         android:visibility="visible"
         app:cameraGesturePinch="zoom"
         app:cameraGestureTap="focusWithMarker"
+        app:cameraSessionType="video"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,10 +32,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="25dp"
-        android:layout_marginStart="160dp"
+        android:layout_marginStart="161dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/pase_video"
+        app:layout_constraintEnd_toStartOf="@+id/pause_video"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_camera"
         app:useCompatPadding="true" />
@@ -66,27 +67,26 @@
         tools:ignore="ContentDescription" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/pase_video"
+        android:id="@+id/pause_video"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="33dp"
-        android:layout_marginEnd="91dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="93dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/take_video"
-        app:layout_constraintTop_toTopOf="@+id/take_video"
-        android:visibility="invisible"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:srcCompat="@drawable/ic_recording" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="381dp"
+        android:layout_marginBottom="383dp"
+        android:layout_marginTop="3dp"
         android:orientation="horizontal"
         android:padding="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/pase_video"
+        app:layout_constraintBottom_toTopOf="@+id/pause_video"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
