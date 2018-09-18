@@ -9,10 +9,12 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -32,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import camera1.themaestrochef.com.cameraapp.Activiteis.ShowAppImages;
+import camera1.themaestrochef.com.cameraapp.Activiteis.ShowAppVideos;
 import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
 import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
@@ -49,6 +52,13 @@ public class CaptureVideo extends AppCompatActivity {
 
     @BindView(R.id.last_captured_video)
     ImageView lastImage;
+
+    @BindView(R.id.pause_video)
+    FloatingActionButton pauseVideo;
+
+    @BindView(R.id.take_video)
+    FloatingActionButton takeVideo;
+
 
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     private static final int REQUEST_WRITE_STORAGE_PERMISSION = 2;
@@ -174,12 +184,23 @@ public class CaptureVideo extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mCameraView.destroy();
+        if (mBackgroundHandler != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                mBackgroundHandler.getLooper().quitSafely();
+            } else {
+                mBackgroundHandler.getLooper().quit();
+            }
+            mBackgroundHandler = null;
+        }
     }
 
 
     @OnClick(R.id.take_video)
     public void captureVideo() {
+            takeVideo.setVisibility(View.INVISIBLE);
+            pauseVideo.setVisibility(View.VISIBLE);
+
+
         if (mCameraView != null) {
             mCameraView.startCapturingVideo(new File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DCIM).getAbsolutePath() + "/Camera/VID_" + System.currentTimeMillis() / 1000 + "_.mp4"));
@@ -188,6 +209,8 @@ public class CaptureVideo extends AppCompatActivity {
 
     @OnClick(R.id.pause_video)
     public void stopVideo() {
+        takeVideo.setVisibility(View.VISIBLE);
+        pauseVideo.setVisibility(View.INVISIBLE);
         if (mCameraView != null) {
             mCameraView.stopCapturingVideo();
         }
@@ -231,8 +254,10 @@ public class CaptureVideo extends AppCompatActivity {
 
     @OnClick(R.id.last_captured_video)
     public void showImages() {
-        Intent intent = new Intent(this, ShowAppImages.class);
+        Intent intent = new Intent(this, ShowAppVideos.class);
         startActivity(intent);
     }
+
+
 
 }

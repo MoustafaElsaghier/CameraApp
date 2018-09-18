@@ -19,11 +19,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="512" />
-                            <entry key="outputName" value="ic_recording" />
+                            <entry key="height" value="60" />
+                            <entry key="outputName" value="ic_stop" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\mustafa\Downloads\recording.svg" />
-                            <entry key="width" value="512" />
+                            <entry key="sourceFile" value="C:\Users\mustafa\Downloads\if_008_-_Record_2949845.svg" />
+                            <entry key="width" value="60" />
                           </map>
                         </option>
                       </PersistentState>
