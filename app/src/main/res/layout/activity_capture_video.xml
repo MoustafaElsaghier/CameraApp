@@ -18,7 +18,7 @@
         app:cameraGesturePinch="zoom"
         app:cameraGestureTap="focusWithMarker"
         app:cameraSessionType="video"
-        app:cameraVideoQuality="max720p"
+        app:cameraVideoQuality="max1080p"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,25 +42,21 @@
         android:id="@+id/last_captured_video"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="32dp"
         android:src="#000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/take_video"
-        app:layout_constraintTop_toTopOf="@+id/take_video" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="@+id/pause_video"
-        app:layout_constraintEnd_toStartOf="@+id/pause_video"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="32dp"
+        android:onClick="openCamera"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/pause_video"
         app:srcCompat="@drawable/ic_camera"
         tools:ignore="ContentDescription" />
 
@@ -70,9 +66,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="@+id/take_video"
-        app:layout_constraintTop_toTopOf="@+id/take_video"
+        android:layout_marginBottom="32dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_stop" />
 
     <LinearLayout

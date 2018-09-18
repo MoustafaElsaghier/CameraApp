@@ -2,8 +2,8 @@ package camera1.themaestrochef.com.cameraapp.Utilities;
 
 
 public class Model_Video {
-    String str_path,str_thumb;
-    boolean boolean_selected;
+    private String str_path, str_thumb;
+    private boolean boolean_selected;
 
     public String getStr_path() {
         return str_path;

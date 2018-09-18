@@ -239,5 +239,6 @@ public class MainActivity extends AppCompatActivity {
     public void openVideo() {
         Intent intent = new Intent(this, CaptureVideo.class);
         startActivity(intent);
+        finish();
     }
 }

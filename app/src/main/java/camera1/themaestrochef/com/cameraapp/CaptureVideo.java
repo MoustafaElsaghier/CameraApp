@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import camera1.themaestrochef.com.cameraapp.Activities.MainActivity;
 import camera1.themaestrochef.com.cameraapp.Activities.ShowAppVideos;
 import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
 import camera1.themaestrochef.com.cameraapp.Utilities.Model_Video;
@@ -100,6 +101,10 @@ public class CaptureVideo extends AppCompatActivity {
                     super.onVideoTaken(video);
                     Uri x = Uri.fromFile(video);
                     sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, x));
+                    Model_Video modelVideo = fn_video();
+                    if (modelVideo != null)
+                        Glide.with(CaptureVideo.this).load(modelVideo.getStr_thumb()).into(lastImage);
+
                 }
             });
         }
@@ -157,8 +162,9 @@ public class CaptureVideo extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (fn_video() != null)
-            Glide.with(this).load(fn_video().getStr_thumb()).into(lastImage);
+        Model_Video modelVideo = fn_video();
+        if (modelVideo != null)
+            Glide.with(this).load(modelVideo.getStr_thumb()).into(lastImage);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -206,7 +212,7 @@ public class CaptureVideo extends AppCompatActivity {
         column_id = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID);
         thum = cursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
 
-        while (cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             absolutePathOfImage = cursor.getString(column_index_data);
             Log.e("Column", absolutePathOfImage);
             Log.e("Folder", cursor.getString(column_index_folder_name));
@@ -247,7 +253,7 @@ public class CaptureVideo extends AppCompatActivity {
     @OnClick(R.id.pause_video)
     public void stopVideo() {
         takeVideo.setVisibility(View.VISIBLE);
-        pauseVideo.setVisibility(View.INVISIBLE);
+        pauseVideo.setVisibility(View.GONE);
         if (mCameraView != null) {
             mCameraView.stopCapturingVideo();
         }
@@ -296,5 +302,9 @@ public class CaptureVideo extends AppCompatActivity {
     }
 
 
-
+    public void openCamera(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
