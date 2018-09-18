@@ -101,13 +101,15 @@ public class MainActivity extends AppCompatActivity {
         flashIcon.setImageResource(FLASH_ICONS[mCurrentFlash]);
         mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
 
-
         isPunchable = SharedPreferencesUtilities.getPinchValue(this);
-        if(mCameraView != null){
-            if(isPunchable)
+        if (mCameraView != null) {
+            if (isPunchable) {
                 mCameraView.mapGesture(Gesture.PINCH, GestureAction.ZOOM);
-            else
+                pinchIcon.setImageResource(android.R.drawable.star_big_on);
+            } else {
                 mCameraView.mapGesture(Gesture.PINCH, GestureAction.NONE);
+                pinchIcon.setImageResource(android.R.drawable.star_big_off);
+            }
         }
     }
 
