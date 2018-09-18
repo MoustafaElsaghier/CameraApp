@@ -79,22 +79,15 @@ public class CaptureVideo extends AppCompatActivity {
         ButterKnife.bind(this);
         //Hide notificationBar
         UiUtilies.hideSystemBar(this);
+        UiUtilies.hideToolBar(this);
         initIcons();
         if (mCameraView != null) {
             mCameraView.addCameraListener(new CameraListener() {
                 @Override
                 public void onVideoTaken(final File video) {
                     super.onVideoTaken(video);
-                    String s = video.getName();
-                    String s1 = video.getAbsolutePath();
-                    String s2 = video.getPath();
-                    long s3 = video.getTotalSpace();
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            saveVideo(video);
-//                        }
-//                    }).start();
+                    Uri x = Uri.fromFile(video);
+                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, x));
                 }
             });
         }
@@ -116,9 +109,6 @@ public class CaptureVideo extends AppCompatActivity {
                 pinchIcon.setImageResource(android.R.drawable.star_big_off);
             }
         }
-    }
-
-    private void saveVideo(File file) {
     }
 
     @Override
@@ -196,17 +186,6 @@ public class CaptureVideo extends AppCompatActivity {
         }
     }
 
-    private File getTempFile(Context context, String url) {
-        File file = null;
-        try {
-            String fileName = Uri.parse(url).getLastPathSegment();
-            file = File.createTempFile(fileName, null, context.getCacheDir());
-        } catch (IOException e) {
-            // Error while creating file
-        }
-        return file;
-    }
-
     @OnClick(R.id.pause_video)
     public void stopVideo() {
         if (mCameraView != null) {
@@ -242,13 +221,12 @@ public class CaptureVideo extends AppCompatActivity {
 
             mCameraView.mapGesture(Gesture.PINCH, GestureAction.NONE); // Pinch to zoom!
             isPunchable = false;
-            SharedPreferencesUtilities.setPinch(this, isPunchable);
         } else {
             mCameraView.mapGesture(Gesture.PINCH, GestureAction.ZOOM); // Pinch to zoom!
             pinchIcon.setImageResource(android.R.drawable.star_big_on);
             isPunchable = true;
-            SharedPreferencesUtilities.setPinch(this, isPunchable);
         }
+            SharedPreferencesUtilities.setPinch(this, isPunchable);
     }
 
     @OnClick(R.id.last_captured_video)

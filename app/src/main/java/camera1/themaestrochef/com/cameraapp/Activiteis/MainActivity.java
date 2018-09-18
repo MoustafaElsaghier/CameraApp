@@ -255,13 +255,12 @@ public class MainActivity extends AppCompatActivity {
 
             mCameraView.mapGesture(Gesture.PINCH, GestureAction.NONE); // Pinch to zoom!
             isPunchable = false;
-            SharedPreferencesUtilities.setPinch(this, isPunchable);
         } else {
             mCameraView.mapGesture(Gesture.PINCH, GestureAction.ZOOM); // Pinch to zoom!
             pinchIcon.setImageResource(android.R.drawable.star_big_on);
             isPunchable = true;
-            SharedPreferencesUtilities.setPinch(this, isPunchable);
         }
+            SharedPreferencesUtilities.setPinch(this, isPunchable);
     }
 
     @OnClick(R.id.last_captured_image)
