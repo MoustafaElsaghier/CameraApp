@@ -1,4 +1,4 @@
-package camera1.themaestrochef.com.cameraapp.Activiteis;
+package camera1.themaestrochef.com.cameraapp.Activities;
 
 import android.app.Activity;
 import android.media.MediaPlayer;

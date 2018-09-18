@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,15 +12,14 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.otaliastudios.cameraview.CameraListener;
-import com.otaliastudios.cameraview.CameraUtils;
 import com.otaliastudios.cameraview.CameraView;
-import com.otaliastudios.cameraview.Facing;
 import com.otaliastudios.cameraview.Flash;
 import com.otaliastudios.cameraview.Gesture;
 import com.otaliastudios.cameraview.GestureAction;
@@ -55,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String FRAGMENT_DIALOG = "dialog";
 
-    private Handler mBackgroundHandler;
-
     private static final Flash[] FLASH_OPTIONS = {
             Flash.AUTO,
             Flash.OFF,
@@ -87,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onPictureTaken(final byte[] jpeg) {
                     super.onPictureTaken(jpeg);
-//                    saveImg(jpeg);
-//                    new PhotoProcessor(jpeg, MainActivity.this);
                     saveImg(jpeg);
                 }
             });
@@ -114,28 +110,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void saveImg(final byte[] jpeg) {
         final Handler handler = new Handler();
-        CameraUtils.decodeBitmap(jpeg, new CameraUtils.BitmapCallback() {
-
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onBitmapReady(final Bitmap bitmap) {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                    == PackageManager.PERMISSION_GRANTED) {
-                                String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
-                                Glide.with(MainActivity.this).load(imgPath).into(lastImage);
-                            } else {
-                                String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
-                                Glide.with(MainActivity.this).load(imgPath).into(lastImage);
-                            }
-                    }
-                }, 20);
-            }
-        });
+            public void run() {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            == PackageManager.PERMISSION_GRANTED) {
 
+                        String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+                        Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                    } else {
+                        String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+                        Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                    }
+            }
+        }, 100);
     }
 
     @Override
@@ -169,19 +159,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mBackgroundHandler != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                mBackgroundHandler.getLooper().quitSafely();
-            } else {
-                mBackgroundHandler.getLooper().quit();
-            }
-            mBackgroundHandler = null;
-        }
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CAMERA_PERMISSION:
@@ -203,8 +180,6 @@ public class MainActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
-
-
         }
     }
 
@@ -214,8 +189,11 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    long bb;
+
     @OnClick(R.id.take_picture)
     public void capturePic() {
+        bb = System.currentTimeMillis();
         if (mCameraView != null)
             mCameraView.capturePicture();
     }
@@ -232,18 +210,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.switch_camera)
     public void switchCamera() {
-        if (mCameraView != null) {
-            Facing facing = mCameraView.getFacing();
-//            if (facing == Facing.BACK) {
-//                mCameraView.setFacing(Facing.FRONT);
-//                mCameraView.mapGesture(Gesture.PINCH, GestureAction.NONE); // Pinch to zoom!
-//            } else {
-//                mCameraView.setFacing(Facing.BACK);
-//                mCameraView.mapGesture(Gesture.PINCH, GestureAction.ZOOM); // Pinch to zoom!
-//            }
-            mCameraView.setFacing(facing == Facing.FRONT ?
-                    Facing.BACK : Facing.FRONT);
-        }
+        mCameraView.toggleFacing();
     }
 
     boolean isPunchable;
@@ -252,12 +219,11 @@ public class MainActivity extends AppCompatActivity {
     public void switchPinch() {
         if (isPunchable) {
             pinchIcon.setImageResource(android.R.drawable.star_big_off);
-
             mCameraView.mapGesture(Gesture.PINCH, GestureAction.NONE); // Pinch to zoom!
             isPunchable = false;
         } else {
-            mCameraView.mapGesture(Gesture.PINCH, GestureAction.ZOOM); // Pinch to zoom!
             pinchIcon.setImageResource(android.R.drawable.star_big_on);
+            mCameraView.mapGesture(Gesture.PINCH, GestureAction.ZOOM); // Pinch to zoom!
             isPunchable = true;
         }
         SharedPreferencesUtilities.setPinch(this, isPunchable);

@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -27,8 +29,16 @@ public class ImageHelper {
             source.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.flush();
             out.close();
-            Uri x = Uri.fromFile(direct);
-            mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, x));
+//            Uri x = Uri.fromFile(direct);
+//            mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, x));
+
+            MediaScannerConnection.scanFile(mContext,
+                    new String[]{direct.getAbsolutePath()}, null,
+                    new MediaScannerConnection.OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+
+                        }
+                    });
         } catch (Exception e) {
             e.printStackTrace();
         }

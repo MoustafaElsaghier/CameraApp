@@ -12,21 +12,21 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-import camera1.themaestrochef.com.cameraapp.Activiteis.ShowAppImages;
-import camera1.themaestrochef.com.cameraapp.Activiteis.ShowAppVideos;
-import camera1.themaestrochef.com.cameraapp.Activiteis.VideoPreviewActivity;
+import camera1.themaestrochef.com.cameraapp.Activities.ShowAppVideos;
+import camera1.themaestrochef.com.cameraapp.Activities.VideoPreviewActivity;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.Model_Video;
 
-public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.viewHolder>{
+public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.viewHolder> {
 
     private ShowAppVideos mContext;
     private ArrayList<Model_Video> mVideos;
 
-    public VideoAdapter (ShowAppVideos mContext, ArrayList<Model_Video> mVideos) {
+    public VideoAdapter(ShowAppVideos mContext, ArrayList<Model_Video> mVideos) {
         this.mContext = mContext;
         this.mVideos = mVideos;
     }
+
     @NonNull
     @Override
     public VideoAdapter.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -46,8 +46,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.viewHolder>{
         return mVideos.size();
     }
 
-    class viewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class viewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView imageView;
+
         public viewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.app_video);
@@ -56,8 +57,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.viewHolder>{
 
         @Override
         public void onClick(View v) {
-            Intent intent=new Intent(mContext, VideoPreviewActivity.class);
-            intent.putExtra("video",mVideos.get(getAdapterPosition()).getStr_path());
+            Intent intent = new Intent(mContext, VideoPreviewActivity.class);
+            intent.putExtra("video", mVideos.get(getAdapterPosition()).getStr_path());
             mContext.startActivity(intent);
         }
     }

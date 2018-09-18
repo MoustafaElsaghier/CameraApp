@@ -1,4 +1,4 @@
-package camera1.themaestrochef.com.cameraapp.Activiteis;
+package camera1.themaestrochef.com.cameraapp.Activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
