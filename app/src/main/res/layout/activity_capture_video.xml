@@ -26,7 +26,7 @@
 
     </com.otaliastudios.cameraview.CameraView>
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageView
         android:id="@+id/take_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,9 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_record"
-        app:useCompatPadding="true"
-        />
+        app:srcCompat="@drawable/ic_record" />
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/last_captured_video"
@@ -66,18 +64,16 @@
         app:srcCompat="@mipmap/ic_launcher_round"
         tools:ignore="ContentDescription" />
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageView
         android:id="@+id/pause_video"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="@+id/take_video"
         app:layout_constraintTop_toTopOf="@+id/take_video"
-        app:srcCompat="@drawable/ic_stop"
-        app:useCompatPadding="true"
-        android:visibility="invisible"
-        />
+        app:srcCompat="@drawable/ic_stop" />
 
     <LinearLayout
         android:id="@+id/linearLayout"

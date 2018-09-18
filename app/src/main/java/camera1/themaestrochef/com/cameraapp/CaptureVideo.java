@@ -24,16 +24,12 @@ import com.otaliastudios.cameraview.Gesture;
 import com.otaliastudios.cameraview.GestureAction;
 
 import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import camera1.themaestrochef.com.cameraapp.Activiteis.ShowAppImages;
-import camera1.themaestrochef.com.cameraapp.Activiteis.ShowAppVideos;
 import camera1.themaestrochef.com.cameraapp.Activities.ShowAppImages;
+import camera1.themaestrochef.com.cameraapp.Activities.ShowAppVideos;
 import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
 import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
@@ -53,10 +49,10 @@ public class CaptureVideo extends AppCompatActivity {
     ImageView lastImage;
 
     @BindView(R.id.pause_video)
-    FloatingActionButton pauseVideo;
+    ImageView pauseVideo;
 
     @BindView(R.id.take_video)
-    FloatingActionButton takeVideo;
+    ImageView takeVideo;
 
 
     private static final int REQUEST_CAMERA_PERMISSION = 1;
@@ -189,8 +185,8 @@ public class CaptureVideo extends AppCompatActivity {
 
     @OnClick(R.id.take_video)
     public void captureVideo() {
-            takeVideo.setVisibility(View.INVISIBLE);
-            pauseVideo.setVisibility(View.VISIBLE);
+        takeVideo.setVisibility(View.INVISIBLE);
+        pauseVideo.setVisibility(View.VISIBLE);
 
 
         if (mCameraView != null) {
@@ -241,15 +237,12 @@ public class CaptureVideo extends AppCompatActivity {
             pinchIcon.setImageResource(android.R.drawable.star_big_on);
             isPunchable = true;
         }
-            SharedPreferencesUtilities.setPinch(this, isPunchable);
+        SharedPreferencesUtilities.setPinch(this, isPunchable);
     }
 
     @OnClick(R.id.last_captured_video)
     public void showImages() {
-        Intent intent = new Intent(this, ShowAppImages.class);
+        Intent intent = new Intent(this, ShowAppVideos.class);
         startActivity(intent);
     }
-
-
-
 }

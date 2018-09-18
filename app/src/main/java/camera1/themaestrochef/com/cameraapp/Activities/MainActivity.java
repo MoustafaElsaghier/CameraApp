@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Hide notificationBar
         UiUtilies.hideSystemBar(this);
-
+        UiUtilies.hideToolBar(this);
         initIcons();
 
         if (mCameraView != null) {
