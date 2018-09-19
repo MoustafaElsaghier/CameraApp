@@ -126,6 +126,10 @@ public class CaptureVideo extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mCameraView.start();
+        mCurrentFlash = SharedPreferencesUtilities.getFlashIndex(this) % 2;
+        flashIcon.setImageResource(FLASH_ICONS[mCurrentFlash]);
+        mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
+
         if (PermissionUtilities.checkAndRequestPermissions(this)) {
             Model_Video modelVideo = fn_video();
             if (modelVideo != null)
