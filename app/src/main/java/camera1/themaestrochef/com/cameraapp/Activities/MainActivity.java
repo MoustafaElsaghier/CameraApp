@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.otaliastudios.cameraview.CameraListener;
@@ -25,6 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import camera1.themaestrochef.com.cameraapp.R;
+import camera1.themaestrochef.com.cameraapp.Utilities.AdsUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.CapturePhotoUtils;
 import camera1.themaestrochef.com.cameraapp.Utilities.ImageHelper;
 import camera1.themaestrochef.com.cameraapp.Utilities.PermissionUtilities;
@@ -56,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
     private AdView mAdView;
 
-
     private static final int[] FLASH_ICONS = {
             R.drawable.ic_flash_off,
             R.drawable.ic_flash_on,
@@ -87,9 +88,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
     }
 
     private void initIcons() {
@@ -154,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
             else
                 lastImage.setVisibility(View.GONE);
         }
+        mAdView = findViewById(R.id.adView);
+        AdsUtilities.initAds(mAdView);
+
     }
 
     @Override

@@ -7,4 +7,7 @@
     <string name="flash_auto">Flash auto</string>
     <string name="flash_off">Flash off</string>
     <string name="flash_on">Flash on</string>
+
+    <string name="APP_AD_ID">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="AD_VIEW_ID">ca-app-pub-3940256099942544/6300978111</string>
 </resources>
