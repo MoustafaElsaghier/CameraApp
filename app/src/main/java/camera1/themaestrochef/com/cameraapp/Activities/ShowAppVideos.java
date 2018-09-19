@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import net.ralphpina.permissionsmanager.PermissionsManager;
 import net.ralphpina.permissionsmanager.PermissionsResult;
@@ -78,11 +79,7 @@ public class ShowAppVideos extends AppCompatActivity {
     }
 
 
-
     public void fn_video() {
-
-
-
 
         PermissionsManager.get().requestStoragePermission().subscribe(new Action1<PermissionsResult>() {
 
@@ -93,16 +90,26 @@ public class ShowAppVideos extends AppCompatActivity {
                 String orderBy = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC";
 
                 if (permissionsResult.isGranted()) { // always true pre-M
-
+                    loadVideos();
                 }
 
                 if (permissionsResult.hasAskedForPermissions()) { // false if pre-M
-
+                    if (!permissionsResult.isGranted())
+                        Toast.makeText(ShowAppVideos.this, "Permission Must be Granted", Toast.LENGTH_SHORT).show();
+                    else if (PermissionsManager.get()
+                            .neverAskForStorage(ShowAppVideos.this)) {
+                        // go to setting to enable te permission again
+                        PermissionsManager.get()
+                                .intentToAppSettings(ShowAppVideos.this);
+                    } else
+                        loadVideos();
                 }
             }
         });
 
+    }
 
+    private void loadVideos() {
         Uri uri;
         Cursor cursor;
         int column_index_data, column_index_folder_name, column_id, thum;
@@ -141,5 +148,4 @@ public class ShowAppVideos extends AppCompatActivity {
         appVideo.setAdapter(adapter);
 
     }
-
 }

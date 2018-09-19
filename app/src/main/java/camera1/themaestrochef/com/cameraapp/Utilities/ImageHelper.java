@@ -77,16 +77,17 @@ public class ImageHelper {
     public static String saveToInternalStorage(Context context, Bitmap bitmapImage) {
 //        ContextWrapper cw = new ContextWrapper(context);
         // path to /data/data/yourapp/app_data/imageDir
-        File directory = context.getFilesDir();
+        File directory =
+                new File(Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DCIM).getAbsolutePath() + "/Camera/VID_" + System.currentTimeMillis() / 1000 + "_.png");
 //        cw.getDir("imageDir", Context.MODE_PRIVATE);
         // Create imageDir
-        File mPath = new File(directory, "IMG_" + System.currentTimeMillis() / 1000 + "_.jpg");
 
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(mPath);
+            fos = new FileOutputStream(directory);
             // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

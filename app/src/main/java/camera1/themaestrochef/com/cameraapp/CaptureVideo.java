@@ -177,7 +177,7 @@ public class CaptureVideo extends AppCompatActivity {
                     .newInstance(R.string.camera_permission_confirmation,
                             new String[]{Manifest.permission.CAMERA,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO},
+                                    Manifest.permission.READ_EXTERNAL_STORAGE},
 
                             REQUEST_CAMERA_PERMISSION,
                             R.string.camera_permission_not_granted)
@@ -244,7 +244,6 @@ public class CaptureVideo extends AppCompatActivity {
         takeVideo.setVisibility(View.INVISIBLE);
         pauseVideo.setVisibility(View.VISIBLE);
 
-
         if (mCameraView != null) {
             mCameraView.startCapturingVideo(new File(Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DCIM).getAbsolutePath() + "/Camera/VID_" + System.currentTimeMillis() / 1000 + "_.mp4"));
@@ -257,6 +256,7 @@ public class CaptureVideo extends AppCompatActivity {
         pauseVideo.setVisibility(View.INVISIBLE);
         if (mCameraView != null) {
             mCameraView.stopCapturingVideo();
+
         }
 
     }

@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -41,7 +40,6 @@ import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 import rx.functions.Action1;
 
 import static camera1.themaestrochef.com.cameraapp.Utilities.Constants.REQUEST_CAMERA_PERMISSION;
-import static camera1.themaestrochef.com.cameraapp.Utilities.Constants.REQUEST_WRITE_STORAGE_PERMISSION;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -116,31 +114,63 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveImg(final byte[] jpeg) {
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+//                    if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                            == PackageManager.PERMISSION_GRANTED) {
+//
+//                String path = ImageHelper.saveToInternalStorage(MainActivity.this, bitmap);
+////                Glide.with(MainActivity.this).load(path).into(lastImage);
+////                        String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+////                        Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+//                    } else {
+//                String path = ImageHelper.saveToInternalStorage(MainActivity.this, bitmap);
+//                Glide.with(MainActivity.this).load(path).into(lastImage);
+//                        String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+////                        Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+//                    }
+//            }
+//        }, 100);
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             == PackageManager.PERMISSION_GRANTED) {
 
-                        String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
-                        Glide.with(MainActivity.this).load(imgPath).into(lastImage);
-                    } else {
-                        String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
-                        Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                        //                        String path = ImageHelper.saveToInternalStorage(MainActivity.this, bitmap);
+                        //                Glide.with(MainActivity.this).load(path).into(lastImage);
+                        final String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+                        if (imgPath != null)
+                            lastImage.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                                }
+                            });
                     }
-                String path = ImageHelper.saveToInternalStorage(MainActivity.this, bitmap);
-                Glide.with(MainActivity.this).load(path).into(lastImage);
+                } else {
+                    final String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+                    if (imgPath != null)
+                        lastImage.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                            }
+                        });
+                }
             }
-        }, 100);
+        }).start();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
 
         PermissionsManager.get().requestStoragePermission().subscribe(new Action1<PermissionsResult>() {
 
@@ -159,11 +189,15 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (permissionsResult.hasAskedForPermissions()) { // false if pre-M
-                    Bitmap bitmap = ImageHelper.getLastTakenImage(MainActivity.this);
-                    if (bitmap != null)
-                        lastImage.setImageBitmap(bitmap);
-                    else
-                        lastImage.setVisibility(View.GONE);
+                    if (permissionsResult.isGranted()) {
+                        Bitmap bitmap = ImageHelper.getLastTakenImage(MainActivity.this);
+                        if (bitmap != null)
+                            lastImage.setImageBitmap(bitmap);
+                        else
+                            lastImage.setVisibility(View.GONE);
+                    } else {
+                        PermissionsManager.get().requestStoragePermission().subscribe(this);
+                    }
                 }
             }
         });
@@ -178,27 +212,28 @@ public class MainActivity extends AppCompatActivity {
 //            else
 //                lastImage.setVisibility(View.GONE);
 //        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED) {
-            mCameraView.start();
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.CAMERA)) {
-            ConfirmationDialogFragment
-                    .newInstance(R.string.camera_permission_confirmation,
-                            new String[]{Manifest.permission.CAMERA,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE},
-                            REQUEST_CAMERA_PERMISSION,
-                            R.string.camera_permission_not_granted)
-                    .show(getSupportFragmentManager(), FRAGMENT_DIALOG);
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
-                    REQUEST_CAMERA_PERMISSION);
-        }
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+//                == PackageManager.PERMISSION_GRANTED) {
+        mCameraView.start();
+//        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                Manifest.permission.CAMERA)) {
+//            ConfirmationDialogFragment
+//                    .newInstance(R.string.camera_permission_confirmation,
+//                            new String[]{Manifest.permission.CAMERA,
+//                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                                    Manifest.permission.READ_EXTERNAL_STORAGE},
+//                            REQUEST_CAMERA_PERMISSION,
+//                            R.string.camera_permission_not_granted)
+//                    .show(getSupportFragmentManager(), FRAGMENT_DIALOG);
+//        } else {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
+//                    REQUEST_CAMERA_PERMISSION);
+//        }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CAMERA_PERMISSION:
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {

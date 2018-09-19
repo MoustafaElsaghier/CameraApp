@@ -46,7 +46,7 @@ public class CapturePhotoUtils {
         String stringUrl = null;    /* value to be returned */
 
         try {
-            url = cr.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            url = cr.insert(Images.Media.EXTERNAL_CONTENT_URI, values);
 
             if (source != null) {
                 OutputStream imageOut = cr.openOutputStream(url);

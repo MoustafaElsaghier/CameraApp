@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import net.ralphpina.permissionsmanager.PermissionsManager;
 import net.ralphpina.permissionsmanager.PermissionsResult;
@@ -19,7 +20,7 @@ import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 import rx.functions.Action1;
 
-public class ShowAppImages extends AppCompatActivity {
+public class ShowAppImages extends AppCompatActivity implements Action1<PermissionsResult> {
 
     @BindView(R.id.app_images)
     RecyclerView appImages;
@@ -28,7 +29,6 @@ public class ShowAppImages extends AppCompatActivity {
     private Cursor externalCursor;
     private Cursor internalCursor;
     private int column_index_data;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,71 +55,49 @@ public class ShowAppImages extends AppCompatActivity {
         appImages.setAdapter(adapter);
     }
 
+    final ArrayList<String> listOfAllImages = new ArrayList<>();
+
+    String orderBy = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC";
+
     private ArrayList<String> getAllShownImagesPath() {
-        final ArrayList<String> listOfAllImages = new ArrayList<>();
 
-        PermissionsManager.get().requestStoragePermission().subscribe(new Action1<PermissionsResult>() {
-
-            @Override
-            public void call(PermissionsResult permissionsResult) {
-
-                // replace order by with null to get them reversed order
-                String orderBy = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC";
-
-                if (permissionsResult.isGranted()) { // always true pre-M
-                    externalCursor = getContentResolver().query(
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            null, null, null, orderBy);
-
-                    internalCursor = getContentResolver().query(
-                            MediaStore.Images.Media.INTERNAL_CONTENT_URI,
-                            null,
-                            null,
-                            null,
-                            orderBy);
-
-                    column_index_data = externalCursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-
-                    while (externalCursor.moveToNext()) {
-                        listOfAllImages.add(externalCursor.getString(column_index_data));
-                    }
-
-                    while (internalCursor.moveToNext()) {
-                        listOfAllImages.add(internalCursor.getString(column_index_data));
-                    }
-
-                }
-
-                if (permissionsResult.hasAskedForPermissions()) { // false if pre-M
-                    externalCursor = getContentResolver().query(
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            null,
-                            null,
-                            null,
-                            orderBy);
-
-                    internalCursor = getContentResolver().query(
-                            MediaStore.Images.Media.INTERNAL_CONTENT_URI,
-                            null,
-                            null,
-                            null,
-                            orderBy);
-
-                    column_index_data = externalCursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-
-
-                    while (externalCursor.moveToNext()) {
-                        listOfAllImages.add(externalCursor.getString(column_index_data));
-                    }
-
-                    while (internalCursor.moveToNext()) {
-                        listOfAllImages.add(internalCursor.getString(column_index_data));
-                    }
-                }
-            }
-        });
-
+        PermissionsManager.get().requestStoragePermission().subscribe(this);
         return listOfAllImages;
     }
 
+    private void loadImages() {
+        externalCursor = getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, null, null, orderBy);
+        internalCursor = getContentResolver().query(
+                MediaStore.Images.Media.INTERNAL_CONTENT_URI,
+                null, null, null, orderBy);
+        column_index_data = externalCursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        while (externalCursor.moveToNext()) {
+            listOfAllImages.add(externalCursor.getString(column_index_data));
+        }
+        while (internalCursor.moveToNext()) {
+            listOfAllImages.add(internalCursor.getString(column_index_data));
+        }
+    }
+
+    @Override
+    public void call(PermissionsResult permissionsResult) {
+        if (permissionsResult.isGranted()) { // always true pre-M
+            loadImages();
+        }
+
+        if (permissionsResult.hasAskedForPermissions()) {// false if pre-M
+            if (!permissionsResult.isGranted()) {
+                Toast.makeText(ShowAppImages.this, "Permission Must be Granted", Toast.LENGTH_SHORT).show();
+                PermissionsManager.get().requestStoragePermission().subscribe(this);
+            } else if (PermissionsManager.get()
+                    .neverAskForStorage(ShowAppImages.this)) {
+                // go to setting to enable te permission again
+                PermissionsManager.get()
+                        .intentToAppSettings(ShowAppImages.this);
+            }
+            loadImages();
+        }
+    }
 }
