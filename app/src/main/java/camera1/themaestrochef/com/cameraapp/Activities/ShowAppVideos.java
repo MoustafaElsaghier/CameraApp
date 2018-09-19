@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.ads.AdView;
 
@@ -148,10 +149,14 @@ public class ShowAppVideos extends AppCompatActivity {
             al_video.add(obj_model);
 
         }
-
-
         adapter = new VideoAdapter(this, al_video);
         appVideo.setAdapter(adapter);
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdView.setVisibility(View.GONE);
     }
 }

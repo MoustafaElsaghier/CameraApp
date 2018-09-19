@@ -163,10 +163,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        mAdView.setVisibility(View.GONE);
+    }
+
+    @Override
     protected void onPause() {
         mCameraView.stop();
         super.onPause();
     }
+
 
     long bb;
 

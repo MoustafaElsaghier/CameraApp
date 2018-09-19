@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.google.android.gms.ads.AdView;
 
@@ -84,5 +85,11 @@ public class ShowAppImages extends AppCompatActivity {
         while (internalCursor.moveToNext()) {
             listOfAllImages.add(internalCursor.getString(column_index_data));
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdView.setVisibility(View.GONE);
     }
 }

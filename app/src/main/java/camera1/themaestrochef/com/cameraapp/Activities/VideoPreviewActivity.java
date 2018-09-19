@@ -71,4 +71,10 @@ public class VideoPreviewActivity extends AppCompatActivity {
         if (videoView.isPlaying()) return;
         videoView.start();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdView.setVisibility(View.GONE);
+    }
 }

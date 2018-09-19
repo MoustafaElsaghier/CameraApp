@@ -2,6 +2,7 @@ package camera1.themaestrochef.com.cameraapp.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -38,5 +39,11 @@ public class ImagePreviewActivity extends AppCompatActivity {
         super.onResume();
         AdsUtilities.initAds(mAdView);
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdView.setVisibility(View.GONE);
     }
 }

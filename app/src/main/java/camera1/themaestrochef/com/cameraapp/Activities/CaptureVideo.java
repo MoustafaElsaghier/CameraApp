@@ -268,4 +268,10 @@ public class CaptureVideo extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdView.setVisibility(View.GONE);
+    }
 }
