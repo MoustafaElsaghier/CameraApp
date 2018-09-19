@@ -37,6 +37,7 @@ import camera1.themaestrochef.com.cameraapp.Activities.MainActivity;
 import camera1.themaestrochef.com.cameraapp.Activities.ShowAppVideos;
 import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
 import camera1.themaestrochef.com.cameraapp.Utilities.Model_Video;
+import camera1.themaestrochef.com.cameraapp.Utilities.PermissionUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 
@@ -61,18 +62,6 @@ public class CaptureVideo extends AppCompatActivity {
     ImageView takeVideo;
 
 
-    private static final int REQUEST_CAMERA_PERMISSION = 1;
-    private static final int REQUEST_WRITE_STORAGE_PERMISSION = 2;
-    private static final int REQUEST_READ_STORAGE_PERMISSION = 3;
-    private static final int REQUEST_USE_MICROPHONE_PERMISSION = 4;
-
-
-    ArrayList al_video = new ArrayList<Model_Video>();
-
-    private static final String FRAGMENT_DIALOG = "dialog";
-
-    private Handler mBackgroundHandler;
-
     private static final Flash[] FLASH_OPTIONS = {
             Flash.OFF,
             Flash.ON
@@ -90,7 +79,7 @@ public class CaptureVideo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture_video);
         ButterKnife.bind(this);
-        ActivityCompat.requestPermissions(MainActivity.activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_STORAGE_PERMISSION);
+
         //Hide notificationBar
         UiUtilies.hideSystemBar(this);
         UiUtilies.hideToolBar(this);
@@ -146,62 +135,18 @@ public class CaptureVideo extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CAMERA_PERMISSION:
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, R.string.camera_permission_not_granted,
-                            Toast.LENGTH_SHORT).show();
-                }
-                // No need to start camera here; it is handled by onResume
-                break;
-            case REQUEST_WRITE_STORAGE_PERMISSION:
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, R.string.camera_permission_not_granted,
-                            Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case REQUEST_READ_STORAGE_PERMISSION:
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, R.string.camera_permission_not_granted,
-                            Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case REQUEST_USE_MICROPHONE_PERMISSION:
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, R.string.camera_permission_not_granted,
-                            Toast.LENGTH_SHORT).show();
-                }
-                break;
-        }
+        PermissionUtilities.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (ContextCompat.checkSelfPermission
-                (this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (PermissionUtilities.checkAndRequestPermissions(this)) {
             Model_Video modelVideo = fn_video();
             if (modelVideo != null)
                 Glide.with(this).load(modelVideo.getStr_thumb()).into(lastImage);
         }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED) {
-            mCameraView.start();
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.CAMERA)) {
-            ConfirmationDialogFragment
-                    .newInstance(R.string.camera_permission_confirmation,
-                            new String[]{Manifest.permission.CAMERA,
-                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                    Manifest.permission.READ_EXTERNAL_STORAGE},
-
-                            REQUEST_CAMERA_PERMISSION,
-                            R.string.camera_permission_not_granted)
-                    .show(getSupportFragmentManager(), FRAGMENT_DIALOG);
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
-                    REQUEST_CAMERA_PERMISSION);
-        }
+        mCameraView.start();
     }
 
     @Override

@@ -40,7 +40,7 @@ public class PermissionUtilities {
     }
 
     public static void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults, final AppCompatActivity activity) {
+                                                  String permissions[], int[] grantResults, final AppCompatActivity activity) {
         Log.d(TAG, "Permission callback called-------");
         switch (requestCode) {
             case REQUEST_ID_MULTIPLE_PERMISSIONS: {
@@ -66,25 +66,9 @@ public class PermissionUtilities {
                         //show the dialog or snackbar saying its necessary and try again otherwise proceed with setup.
                         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                                 || ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            showDialogOK(
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            switch (which) {
-                                                case DialogInterface.BUTTON_POSITIVE:
-                                                    checkAndRequestPermissions(activity);
-                                                    break;
-                                                case DialogInterface.BUTTON_NEGATIVE:
-                                                    dialog.dismiss();
-                                                    activity.finish();
-                                                    break;
-                                            }
-                                        }
-                                    }, activity);
-                        }
-                        //permission is denied (and never ask again is  checked)
-                        //shouldShowRequestPermissionRationale will return false
-                        else {
+                            //permission is denied (and never ask again is  checked)
+                            //shouldShowRequestPermissionRationale will return false
+                        } else {
                             Toast.makeText(activity, "Go to settings and enable permissions", Toast.LENGTH_LONG)
                                     .show();
                             activity.finish();
@@ -96,15 +80,5 @@ public class PermissionUtilities {
         }
 
     }
-
-    private static void showDialogOK(DialogInterface.OnClickListener okListener, AppCompatActivity activity) {
-        new AlertDialog.Builder(activity)
-                .setMessage("Read and Write Permissions required for this app")
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", okListener)
-                .create()
-                .show();
-    }
-
 }
 
