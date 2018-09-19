@@ -23,7 +23,6 @@ public class AdsUtilities {
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
-
                 Log.e("AdMob", "Code : " + errorCode);
                 // Code to be executed when an ad request fails.
             }

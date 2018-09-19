@@ -36,7 +36,7 @@ import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 public class MainActivity extends AppCompatActivity {
 
     private static final String CAMERA_FACING_MODE = "camera_facing_mode";
-    private static final String CAMERA_MODE_FRONT ="FRONT" ;
+    private static final String CAMERA_MODE_FRONT = "FRONT";
 
     @BindView(R.id.camera)
     CameraView mCameraView;
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        if(savedInstanceState!=null&&savedInstanceState.getString(CAMERA_FACING_MODE)==CAMERA_MODE_FRONT){
+        if (savedInstanceState != null && savedInstanceState.getString(CAMERA_FACING_MODE) == CAMERA_MODE_FRONT) {
             mCameraView.setFacing(Facing.FRONT);
         }
 
@@ -242,8 +242,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(mCameraView.getFacing()==Facing.FRONT){
-            outState.putString(CAMERA_FACING_MODE,CAMERA_MODE_FRONT);
+        if (mCameraView.getFacing() == Facing.FRONT) {
+            outState.putString(CAMERA_FACING_MODE, CAMERA_MODE_FRONT);
         }
     }
 

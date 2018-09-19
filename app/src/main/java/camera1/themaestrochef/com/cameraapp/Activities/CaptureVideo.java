@@ -36,7 +36,7 @@ import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 public class CaptureVideo extends AppCompatActivity {
 
     private static final String CAMERA_FACING_MODE = "camera_facing_mode";
-    private static final String CAMERA_MODE_FRONT ="FRONT" ;
+    private static final String CAMERA_MODE_FRONT = "FRONT";
     @BindView(R.id.camera)
     CameraView mCameraView;
 
@@ -94,7 +94,7 @@ public class CaptureVideo extends AppCompatActivity {
             });
         }
 
-        if(savedInstanceState!=null&&savedInstanceState.getString(CAMERA_FACING_MODE)==CAMERA_MODE_FRONT){
+        if (savedInstanceState != null && savedInstanceState.getString(CAMERA_FACING_MODE) == CAMERA_MODE_FRONT) {
             mCameraView.setFacing(Facing.FRONT);
         }
 
@@ -225,11 +225,7 @@ public class CaptureVideo extends AppCompatActivity {
 
     @OnClick(R.id.switch_camera)
     public void switchCamera() {
-        if (mCameraView != null) {
-            Facing facing = mCameraView.getFacing();
-            mCameraView.setFacing(facing == Facing.FRONT ?
-                    Facing.BACK : Facing.FRONT);
-        }
+        mCameraView.toggleFacing();
     }
 
     boolean isPunchable;
@@ -268,7 +264,7 @@ public class CaptureVideo extends AppCompatActivity {
         mAdView.setVisibility(View.GONE);
     }
 
-    private void updateLastVideo(final int time){
+    private void updateLastVideo(final int time) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -292,8 +288,8 @@ public class CaptureVideo extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(mCameraView.getFacing()==Facing.FRONT){
-            outState.putString(CAMERA_FACING_MODE,CAMERA_MODE_FRONT);
+        if (mCameraView.getFacing() == Facing.FRONT) {
+            outState.putString(CAMERA_FACING_MODE, CAMERA_MODE_FRONT);
         }
     }
 }
