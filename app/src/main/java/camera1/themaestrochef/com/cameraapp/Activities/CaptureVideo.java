@@ -1,23 +1,16 @@
-package camera1.themaestrochef.com.cameraapp;
+package camera1.themaestrochef.com.cameraapp.Activities;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.otaliastudios.cameraview.CameraListener;
@@ -28,18 +21,15 @@ import com.otaliastudios.cameraview.Gesture;
 import com.otaliastudios.cameraview.GestureAction;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import camera1.themaestrochef.com.cameraapp.Activities.MainActivity;
-import camera1.themaestrochef.com.cameraapp.Activities.ShowAppVideos;
-import camera1.themaestrochef.com.cameraapp.Dialogs.ConfirmationDialogFragment;
+import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.Model_Video;
 import camera1.themaestrochef.com.cameraapp.Utilities.PermissionUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
-import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
+import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 
 public class CaptureVideo extends AppCompatActivity {
 
@@ -81,8 +71,8 @@ public class CaptureVideo extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //Hide notificationBar
-        UiUtilies.hideSystemBar(this);
-        UiUtilies.hideToolBar(this);
+        UiUtilise.hideSystemBar(this);
+        UiUtilise.hideToolBar(this);
         initIcons();
         if (mCameraView != null) {
             mCameraView.addCameraListener(new CameraListener() {

@@ -1,6 +1,5 @@
 package camera1.themaestrochef.com.cameraapp.Activities;
 
-import android.app.Activity;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.MediaController;
 import android.widget.VideoView;
 import camera1.themaestrochef.com.cameraapp.R;
-import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
+import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 
 
 public class VideoPreviewActivity extends AppCompatActivity {
@@ -22,8 +21,8 @@ public class VideoPreviewActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_preview);
-        UiUtilies.hideSystemBar(this);
-        UiUtilies.hideToolBar(this);
+        UiUtilise.hideSystemBar(this);
+        UiUtilise.hideToolBar(this);
         videoView = findViewById(R.id.video);
         videoView.setOnClickListener(new View.OnClickListener() {
             @Override

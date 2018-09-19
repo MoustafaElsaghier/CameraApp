@@ -6,10 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
-
-import net.ralphpina.permissionsmanager.PermissionsManager;
-import net.ralphpina.permissionsmanager.PermissionsResult;
 
 import java.util.ArrayList;
 
@@ -17,10 +13,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import camera1.themaestrochef.com.cameraapp.Adapters.AppImagesAdapter;
 import camera1.themaestrochef.com.cameraapp.R;
-import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
-import rx.functions.Action1;
+import camera1.themaestrochef.com.cameraapp.Utilities.PermissionUtilities;
+import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 
-public class ShowAppImages extends AppCompatActivity implements Action1<PermissionsResult> {
+public class ShowAppImages extends AppCompatActivity {
 
     @BindView(R.id.app_images)
     RecyclerView appImages;
@@ -35,8 +31,8 @@ public class ShowAppImages extends AppCompatActivity implements Action1<Permissi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_app_images);
         ButterKnife.bind(this);
-        UiUtilies.hideToolBar(this);
-        UiUtilies.hideSystemBar(this);
+        UiUtilise.hideToolBar(this);
+        UiUtilise.hideSystemBar(this);
     }
 
     @Override
@@ -61,7 +57,8 @@ public class ShowAppImages extends AppCompatActivity implements Action1<Permissi
 
     private ArrayList<String> getAllShownImagesPath() {
 
-        PermissionsManager.get().requestStoragePermission().subscribe(this);
+        if (PermissionUtilities.checkAndRequestPermissions(this))
+            loadImages();
         return listOfAllImages;
     }
 
@@ -78,26 +75,6 @@ public class ShowAppImages extends AppCompatActivity implements Action1<Permissi
         }
         while (internalCursor.moveToNext()) {
             listOfAllImages.add(internalCursor.getString(column_index_data));
-        }
-    }
-
-    @Override
-    public void call(PermissionsResult permissionsResult) {
-        if (permissionsResult.isGranted()) { // always true pre-M
-            loadImages();
-        }
-
-        if (permissionsResult.hasAskedForPermissions()) {// false if pre-M
-            if (!permissionsResult.isGranted()) {
-                Toast.makeText(ShowAppImages.this, "Permission Must be Granted", Toast.LENGTH_SHORT).show();
-                PermissionsManager.get().requestStoragePermission().subscribe(this);
-            } else if (PermissionsManager.get()
-                    .neverAskForStorage(ShowAppImages.this)) {
-                // go to setting to enable te permission again
-                PermissionsManager.get()
-                        .intentToAppSettings(ShowAppImages.this);
-            }
-            loadImages();
         }
     }
 }

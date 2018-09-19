@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import camera1.themaestrochef.com.cameraapp.R;
-import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
+import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 
 public class ImagePreviewActivity extends AppCompatActivity {
 
@@ -20,8 +20,8 @@ public class ImagePreviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_preview);
-        UiUtilies.hideSystemBar(this);
-        UiUtilies.hideToolBar(this);
+        UiUtilise.hideSystemBar(this);
+        UiUtilise.hideToolBar(this);
         ButterKnife.bind(this);
 
         String mPath = getIntent().getStringExtra("imagePath");

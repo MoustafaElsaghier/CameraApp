@@ -21,13 +21,12 @@ import com.otaliastudios.cameraview.GestureAction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import camera1.themaestrochef.com.cameraapp.CaptureVideo;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.CapturePhotoUtils;
 import camera1.themaestrochef.com.cameraapp.Utilities.ImageHelper;
 import camera1.themaestrochef.com.cameraapp.Utilities.PermissionUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
-import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
+import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //Hide notificationBar
-        UiUtilies.hideSystemBar(this);
-        UiUtilies.hideToolBar(this);
+        UiUtilise.hideSystemBar(this);
+        UiUtilise.hideToolBar(this);
         initIcons();
 
         if (mCameraView != null) {
@@ -117,17 +116,6 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                     }
-//                    else {
-//                        ActivityCompat.requestPermissions(MainActivity.activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_STORAGE_PERMISSION);
-//                        final String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
-//                        if (imgPath != null)
-//                            lastImage.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    Glide.with(MainActivity.this).load(imgPath).into(lastImage);
-//                                }
-//                            });
-//                    }
                 } else {
                     final String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
                     if (imgPath != null)

@@ -12,10 +12,6 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
-
-import net.ralphpina.permissionsmanager.PermissionsManager;
-import net.ralphpina.permissionsmanager.PermissionsResult;
 
 import java.util.ArrayList;
 
@@ -24,8 +20,8 @@ import butterknife.ButterKnife;
 import camera1.themaestrochef.com.cameraapp.Adapters.VideoAdapter;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.Model_Video;
-import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
-import rx.functions.Action1;
+import camera1.themaestrochef.com.cameraapp.Utilities.PermissionUtilities;
+import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 
 
 public class ShowAppVideos extends AppCompatActivity {
@@ -42,8 +38,8 @@ public class ShowAppVideos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_app_videos);
         ButterKnife.bind(this);
-        UiUtilies.hideToolBar(this);
-        UiUtilies.hideSystemBar(this);
+        UiUtilise.hideToolBar(this);
+        UiUtilise.hideSystemBar(this);
         init();
     }
 
@@ -81,42 +77,19 @@ public class ShowAppVideos extends AppCompatActivity {
 
     public void fn_video() {
 
-        PermissionsManager.get().requestStoragePermission().subscribe(new Action1<PermissionsResult>() {
-
-            @Override
-            public void call(PermissionsResult permissionsResult) {
-
-                // replace order by with null to get them reversed order
-                String orderBy = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC";
-
-                if (permissionsResult.isGranted()) { // always true pre-M
-                    loadVideos();
-                }
-
-                if (permissionsResult.hasAskedForPermissions()) { // false if pre-M
-                    if (!permissionsResult.isGranted())
-                        Toast.makeText(ShowAppVideos.this, "Permission Must be Granted", Toast.LENGTH_SHORT).show();
-                    else if (PermissionsManager.get()
-                            .neverAskForStorage(ShowAppVideos.this)) {
-                        // go to setting to enable te permission again
-                        PermissionsManager.get()
-                                .intentToAppSettings(ShowAppVideos.this);
-                    } else
-                        loadVideos();
-                }
-            }
-        });
-
+        if (PermissionUtilities.checkAndRequestPermissions(this)) {
+            loadVideos();
+        }
     }
 
     private void loadVideos() {
-        Uri uri,uri1;
+        Uri uri, uri1;
         Cursor cursor;
         int column_index_data, column_index_folder_name, column_id, thum;
 
-        String absolutePathOfImage = null;
+        String absolutePathOfImage;
         uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-        uri1= MediaStore.Video.Media.INTERNAL_CONTENT_URI;
+        uri1 = MediaStore.Video.Media.INTERNAL_CONTENT_URI;
 
         String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME, MediaStore.Video.Media._ID, MediaStore.Video.Thumbnails.DATA};
 
@@ -130,10 +103,6 @@ public class ShowAppVideos extends AppCompatActivity {
 
         while (cursor.moveToNext()) {
             absolutePathOfImage = cursor.getString(column_index_data);
-            Log.e("Column", absolutePathOfImage);
-            Log.e("Folder", cursor.getString(column_index_folder_name));
-            Log.e("column_id", cursor.getString(column_id));
-            Log.e("thum", cursor.getString(thum));
 
             Model_Video obj_model = new Model_Video();
             obj_model.setBoolean_selected(false);
