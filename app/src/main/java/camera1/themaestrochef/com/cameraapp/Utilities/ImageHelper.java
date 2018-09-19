@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
@@ -38,6 +39,13 @@ public class ImageHelper {
             }
         }
         return null;
+    }
+
+    public static Bitmap flipImage(Bitmap bitmap) {
+        //Moustafa: fix issue of image reflection due to front camera settings
+        Matrix matrix = new Matrix();
+        matrix.preScale(-1, 1);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
 }

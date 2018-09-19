@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraView;
+import com.otaliastudios.cameraview.Facing;
 import com.otaliastudios.cameraview.Flash;
 import com.otaliastudios.cameraview.Gesture;
 import com.otaliastudios.cameraview.GestureAction;
@@ -104,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
+                if (mCameraView.getFacing() == Facing.FRONT)
+                    bitmap = ImageHelper.flipImage(bitmap);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (PermissionUtilities.checkAndRequestPermissions(MainActivity.this)) {
 
@@ -134,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        mCameraView.start();
         if (PermissionUtilities.checkAndRequestPermissions(this)) {
             Bitmap bitmap = ImageHelper.getLastTakenImage(MainActivity.this);
             if (bitmap != null)
@@ -141,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
             else
                 lastImage.setVisibility(View.GONE);
         }
-        mCameraView.start();
     }
 
     @Override

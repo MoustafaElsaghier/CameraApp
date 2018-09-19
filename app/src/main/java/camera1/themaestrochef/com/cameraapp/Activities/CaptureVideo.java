@@ -131,12 +131,12 @@ public class CaptureVideo extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mCameraView.start();
         if (PermissionUtilities.checkAndRequestPermissions(this)) {
             Model_Video modelVideo = fn_video();
             if (modelVideo != null)
                 Glide.with(this).load(modelVideo.getStr_thumb()).into(lastImage);
         }
-        mCameraView.start();
     }
 
     @Override
