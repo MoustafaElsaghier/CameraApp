@@ -108,5 +108,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-        <!--ads:adUnitId="ca-app-pub-3940256099942544/6300978111"-->
 </android.support.constraint.ConstraintLayout>

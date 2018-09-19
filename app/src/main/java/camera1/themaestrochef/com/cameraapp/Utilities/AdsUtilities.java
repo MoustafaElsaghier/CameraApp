@@ -6,8 +6,6 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import camera1.themaestrochef.com.cameraapp.R;
-
 public class AdsUtilities {
 
     public static void initAds(final AdView mAdView) {
