@@ -35,7 +35,7 @@ public class ShowAppVideos extends AppCompatActivity {
     VideoAdapter adapter;
 
     @BindView(R.id.adView)
-    private AdView mAdView;
+    AdView mAdView;
 
     ArrayList al_video = new ArrayList<Model_Video>();
 

@@ -19,7 +19,7 @@ public class ImagePreviewActivity extends AppCompatActivity {
     ImageView imageView;
 
     @BindView(R.id.adView)
-    private AdView mAdView;
+    AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

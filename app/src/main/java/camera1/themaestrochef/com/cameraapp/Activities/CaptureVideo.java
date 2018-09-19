@@ -54,7 +54,7 @@ public class CaptureVideo extends AppCompatActivity {
     ImageView takeVideo;
 
     @BindView(R.id.adView)
-    private AdView mAdView;
+    AdView mAdView;
 
 
     private static final Flash[] FLASH_OPTIONS = {

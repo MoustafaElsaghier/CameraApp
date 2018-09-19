@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @BindView(R.id.adView)
-    private AdView mAdView;
+    AdView mAdView;
 
     private static final int[] FLASH_ICONS = {
             R.drawable.ic_flash_off,

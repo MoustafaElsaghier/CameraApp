@@ -23,7 +23,7 @@ public class VideoPreviewActivity extends AppCompatActivity {
     private VideoView videoView;
 
     @BindView(R.id.adView)
-    private AdView mAdView;
+    AdView mAdView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

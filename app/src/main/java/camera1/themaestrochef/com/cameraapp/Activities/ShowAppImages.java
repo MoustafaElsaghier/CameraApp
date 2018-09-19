@@ -26,7 +26,7 @@ public class ShowAppImages extends AppCompatActivity {
     AppImagesAdapter adapter;
 
     @BindView(R.id.adView)
-    private AdView mAdView;
+    AdView mAdView;
 
     private Cursor externalCursor;
     private Cursor internalCursor;
