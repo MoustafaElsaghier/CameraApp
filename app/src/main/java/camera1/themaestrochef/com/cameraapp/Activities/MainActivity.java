@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.Facing;
@@ -52,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
             Flash.AUTO
     };
 
+    private AdView mAdView;
+
+
     private static final int[] FLASH_ICONS = {
             R.drawable.ic_flash_off,
             R.drawable.ic_flash_on,
@@ -81,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     private void initIcons() {
