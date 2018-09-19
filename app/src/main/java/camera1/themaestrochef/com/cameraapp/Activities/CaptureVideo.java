@@ -35,6 +35,8 @@ import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 
 public class CaptureVideo extends AppCompatActivity {
 
+    private static final String CAMERA_FACING_MODE = "camera_facing_mode";
+    private static final String CAMERA_MODE_FRONT ="FRONT" ;
     @BindView(R.id.camera)
     CameraView mCameraView;
 
@@ -59,7 +61,7 @@ public class CaptureVideo extends AppCompatActivity {
 
     private static final Flash[] FLASH_OPTIONS = {
             Flash.OFF,
-            Flash.ON
+            Flash.TORCH
     };
 
     private static final int[] FLASH_ICONS = {
@@ -79,6 +81,7 @@ public class CaptureVideo extends AppCompatActivity {
         UiUtilise.hideSystemBar(this);
         UiUtilise.hideToolBar(this);
         initIcons();
+        updateLastVideo(0);
         if (mCameraView != null) {
             mCameraView.addCameraListener(new CameraListener() {
                 @Override
@@ -86,27 +89,13 @@ public class CaptureVideo extends AppCompatActivity {
                     super.onVideoTaken(video);
                     Uri x = Uri.fromFile(video);
                     sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, x));
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(500);
-                                final Model_Video modelVideo = fn_video();
-
-                                if (modelVideo != null)
-                                    lastImage.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Glide.with(CaptureVideo.this).load(modelVideo.getStr_thumb()).into(lastImage);
-                                        }
-                                    });
-                            } catch (InterruptedException ignored) {
-                            }
-                        }
-                    }).start();
-
+                    updateLastVideo(1000);
                 }
             });
+        }
+
+        if(savedInstanceState!=null&&savedInstanceState.getString(CAMERA_FACING_MODE)==CAMERA_MODE_FRONT){
+            mCameraView.setFacing(Facing.FRONT);
         }
 
     }
@@ -273,5 +262,34 @@ public class CaptureVideo extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         mAdView.setVisibility(View.GONE);
+    }
+
+    private void updateLastVideo(final int time){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(time);
+                    final Model_Video modelVideo = fn_video();
+
+                    if (modelVideo != null)
+                        lastImage.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Glide.with(CaptureVideo.this).load(modelVideo.getStr_thumb()).into(lastImage);
+                            }
+                        });
+                } catch (InterruptedException ignored) {
+                }
+            }
+        }).start();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(mCameraView.getFacing()==Facing.FRONT){
+            outState.putString(CAMERA_FACING_MODE,CAMERA_MODE_FRONT);
+        }
     }
 }
