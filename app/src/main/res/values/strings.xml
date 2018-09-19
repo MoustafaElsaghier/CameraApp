@@ -8,6 +8,14 @@
     <string name="flash_off">Flash off</string>
     <string name="flash_on">Flash on</string>
 
+    <!--
+        1- remove default APP_AD_ID & AD_VIEW_ID
+        2- un-comment the APP_AD_ID & AD_VIEW_ID
+        3- app runs now with your adMob IDS
+    -->
+    <!--<string name="APP_AD_ID">ca-app-pub-3924158907329616~9536912933</string>-->
     <string name="APP_AD_ID">ca-app-pub-3940256099942544~3347511713</string>
+
+    <!--<string name="AD_VIEW_ID">ca-app-pub-3924158907329616/8186396149</string>-->
     <string name="AD_VIEW_ID">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

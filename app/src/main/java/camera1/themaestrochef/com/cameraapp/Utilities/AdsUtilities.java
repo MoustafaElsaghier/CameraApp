@@ -1,6 +1,8 @@
 package camera1.themaestrochef.com.cameraapp.Utilities;
 
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -21,13 +23,15 @@ public class AdsUtilities {
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
-                System.out.println("Error");
+
+                Log.e("AdMob", "Code : " + errorCode);
                 // Code to be executed when an ad request fails.
             }
 
             @Override
             public void onAdOpened() {
                 System.out.println("Error");
+                Log.i("AdMob", "ad opened");
                 // Code to be executed when an ad opens an overlay that
                 // covers the screen.
             }
