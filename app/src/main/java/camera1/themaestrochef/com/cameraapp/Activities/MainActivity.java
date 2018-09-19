@@ -40,6 +40,7 @@ import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilies;
 import rx.functions.Action1;
 
 import static camera1.themaestrochef.com.cameraapp.Utilities.Constants.REQUEST_CAMERA_PERMISSION;
+import static camera1.themaestrochef.com.cameraapp.Utilities.Constants.REQUEST_WRITE_STORAGE_PERMISSION;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,9 +61,10 @@ public class MainActivity extends AppCompatActivity {
     public static final String FRAGMENT_DIALOG = "dialog";
 
     private static final Flash[] FLASH_OPTIONS = {
-            Flash.AUTO,
+
             Flash.OFF,
-            Flash.ON
+            Flash.ON,
+            Flash.AUTO
     };
 
     private static final int[] FLASH_ICONS = {
@@ -145,6 +147,16 @@ public class MainActivity extends AppCompatActivity {
 
                         //                        String path = ImageHelper.saveToInternalStorage(MainActivity.this, bitmap);
                         //                Glide.with(MainActivity.this).load(path).into(lastImage);
+                        final String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+                        if (imgPath != null)
+                            lastImage.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                                }
+                            });
+                    } else {
+                        ActivityCompat.requestPermissions(MainActivity.activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_STORAGE_PERMISSION);
                         final String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
                         if (imgPath != null)
                             lastImage.post(new Runnable() {

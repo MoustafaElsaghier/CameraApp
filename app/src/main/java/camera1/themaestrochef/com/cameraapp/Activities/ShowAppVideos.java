@@ -110,17 +110,43 @@ public class ShowAppVideos extends AppCompatActivity {
     }
 
     private void loadVideos() {
-        Uri uri;
+        Uri uri,uri1;
         Cursor cursor;
         int column_index_data, column_index_folder_name, column_id, thum;
 
         String absolutePathOfImage = null;
         uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        uri1= MediaStore.Video.Media.INTERNAL_CONTENT_URI;
 
         String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME, MediaStore.Video.Media._ID, MediaStore.Video.Thumbnails.DATA};
 
         final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
         cursor = getApplicationContext().getContentResolver().query(uri, projection, null, null, orderBy + " DESC");
+
+        column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        column_index_folder_name = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
+        column_id = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID);
+        thum = cursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
+
+        while (cursor.moveToNext()) {
+            absolutePathOfImage = cursor.getString(column_index_data);
+            Log.e("Column", absolutePathOfImage);
+            Log.e("Folder", cursor.getString(column_index_folder_name));
+            Log.e("column_id", cursor.getString(column_id));
+            Log.e("thum", cursor.getString(thum));
+
+            Model_Video obj_model = new Model_Video();
+            obj_model.setBoolean_selected(false);
+            obj_model.setStr_path(absolutePathOfImage);
+            obj_model.setStr_thumb(cursor.getString(thum));
+
+            al_video.add(obj_model);
+
+        }
+        String[] projectionInternal = {MediaStore.MediaColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME, MediaStore.Video.Media._ID, MediaStore.Video.Thumbnails.DATA};
+
+        final String orderByInternal = MediaStore.Images.Media.DATE_TAKEN;
+        cursor = getApplicationContext().getContentResolver().query(uri1, projectionInternal, null, null, orderByInternal + " DESC");
 
         column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
         column_index_folder_name = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);

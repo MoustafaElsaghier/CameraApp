@@ -90,6 +90,7 @@ public class CaptureVideo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture_video);
         ButterKnife.bind(this);
+        ActivityCompat.requestPermissions(MainActivity.activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_STORAGE_PERMISSION);
         //Hide notificationBar
         UiUtilies.hideSystemBar(this);
         UiUtilies.hideToolBar(this);
@@ -101,9 +102,19 @@ public class CaptureVideo extends AppCompatActivity {
                     super.onVideoTaken(video);
                     Uri x = Uri.fromFile(video);
                     sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, x));
-                    Model_Video modelVideo = fn_video();
-                    if (modelVideo != null)
-                        Glide.with(CaptureVideo.this).load(modelVideo.getStr_thumb()).into(lastImage);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(500);
+                                Model_Video modelVideo = fn_video();
+
+                                if (modelVideo != null)
+                                    Glide.with(CaptureVideo.this).load(modelVideo.getStr_thumb()).into(lastImage);
+                            } catch (InterruptedException ignored) {
+                            }
+                        }
+                    }).start();
 
                 }
             });
@@ -195,7 +206,6 @@ public class CaptureVideo extends AppCompatActivity {
     }
 
     public Model_Video fn_video() {
-
         Uri uri;
         Cursor cursor;
         int column_index_data, column_index_folder_name, column_id, thum;
@@ -245,8 +255,11 @@ public class CaptureVideo extends AppCompatActivity {
         pauseVideo.setVisibility(View.VISIBLE);
 
         if (mCameraView != null) {
-            mCameraView.startCapturingVideo(new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DCIM).getAbsolutePath() + "/Camera/VID_" + System.currentTimeMillis() / 1000 + "_.mp4"));
+            File f = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DCIM).getAbsolutePath() + "/Camera/VID_" + System.currentTimeMillis() / 1000 + "_.mp4");
+            f.setWritable(true);
+            f.setReadable(true);
+            mCameraView.startCapturingVideo(f);
         }
     }
 
