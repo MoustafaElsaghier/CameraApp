@@ -13,12 +13,15 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.google.android.gms.ads.AdView;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import camera1.themaestrochef.com.cameraapp.Adapters.VideoAdapter;
 import camera1.themaestrochef.com.cameraapp.R;
+import camera1.themaestrochef.com.cameraapp.Utilities.AdsUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.Model_Video;
 import camera1.themaestrochef.com.cameraapp.Utilities.PermissionUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
@@ -31,6 +34,9 @@ public class ShowAppVideos extends AppCompatActivity {
     RecyclerView appVideo;
     VideoAdapter adapter;
 
+    @BindView(R.id.adView)
+    private AdView mAdView;
+
     ArrayList al_video = new ArrayList<Model_Video>();
 
     @Override
@@ -40,7 +46,6 @@ public class ShowAppVideos extends AppCompatActivity {
         ButterKnife.bind(this);
         UiUtilise.hideToolBar(this);
         UiUtilise.hideSystemBar(this);
-        init();
     }
 
     private void init() {
@@ -74,6 +79,12 @@ public class ShowAppVideos extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
+        AdsUtilities.initAds(mAdView);
+    }
 
     public void fn_video() {
 

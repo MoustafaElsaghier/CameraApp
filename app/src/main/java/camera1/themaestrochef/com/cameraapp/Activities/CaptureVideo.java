@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.ads.AdView;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.Facing;
@@ -26,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import camera1.themaestrochef.com.cameraapp.R;
+import camera1.themaestrochef.com.cameraapp.Utilities.AdsUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.Model_Video;
 import camera1.themaestrochef.com.cameraapp.Utilities.PermissionUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
@@ -50,6 +52,9 @@ public class CaptureVideo extends AppCompatActivity {
 
     @BindView(R.id.take_video)
     ImageView takeVideo;
+
+    @BindView(R.id.adView)
+    private AdView mAdView;
 
 
     private static final Flash[] FLASH_OPTIONS = {
@@ -137,6 +142,7 @@ public class CaptureVideo extends AppCompatActivity {
             if (modelVideo != null)
                 Glide.with(this).load(modelVideo.getStr_thumb()).into(lastImage);
         }
+        AdsUtilities.initAds(mAdView);
     }
 
     @Override

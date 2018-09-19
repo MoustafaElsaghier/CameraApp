@@ -9,13 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.MediaController;
 import android.widget.VideoView;
+
+import com.google.android.gms.ads.AdView;
+
+import butterknife.BindView;
 import camera1.themaestrochef.com.cameraapp.R;
+import camera1.themaestrochef.com.cameraapp.Utilities.AdsUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 
 
 public class VideoPreviewActivity extends AppCompatActivity {
 
     private VideoView videoView;
+
+    @BindView(R.id.adView)
+    private AdView mAdView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +59,12 @@ public class VideoPreviewActivity extends AppCompatActivity {
                 playVideo();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AdsUtilities.initAds(mAdView);
     }
 
     void playVideo() {

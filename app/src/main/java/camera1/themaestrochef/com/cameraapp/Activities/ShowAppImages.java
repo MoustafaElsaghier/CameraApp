@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdView;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import camera1.themaestrochef.com.cameraapp.Adapters.AppImagesAdapter;
 import camera1.themaestrochef.com.cameraapp.R;
+import camera1.themaestrochef.com.cameraapp.Utilities.AdsUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.PermissionUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 
@@ -21,6 +24,9 @@ public class ShowAppImages extends AppCompatActivity {
     @BindView(R.id.app_images)
     RecyclerView appImages;
     AppImagesAdapter adapter;
+
+    @BindView(R.id.adView)
+    private AdView mAdView;
 
     private Cursor externalCursor;
     private Cursor internalCursor;
@@ -40,6 +46,8 @@ public class ShowAppImages extends AppCompatActivity {
         super.onResume();
         // call in onResume so that if he deletes image from gallery
         initAppImages();
+        AdsUtilities.initAds(mAdView);
+
     }
 
     private void initAppImages() {

@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             Flash.AUTO
     };
 
+    @BindView(R.id.adView)
     private AdView mAdView;
 
     private static final int[] FLASH_ICONS = {
@@ -152,9 +153,7 @@ public class MainActivity extends AppCompatActivity {
             else
                 lastImage.setVisibility(View.GONE);
         }
-        mAdView = findViewById(R.id.adView);
         AdsUtilities.initAds(mAdView);
-
     }
 
     @Override
