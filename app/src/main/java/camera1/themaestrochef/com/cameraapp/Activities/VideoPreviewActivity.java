@@ -13,6 +13,7 @@ import android.widget.VideoView;
 import com.google.android.gms.ads.AdView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.AdsUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
@@ -31,6 +32,9 @@ public class VideoPreviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video_preview);
         UiUtilise.hideSystemBar(this);
         UiUtilise.hideToolBar(this);
+
+        ButterKnife.bind(this);
+
         videoView = findViewById(R.id.video);
         videoView.setOnClickListener(new View.OnClickListener() {
             @Override
