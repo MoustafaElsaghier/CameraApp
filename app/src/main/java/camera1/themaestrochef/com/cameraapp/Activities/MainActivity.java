@@ -58,19 +58,16 @@ public class MainActivity extends AppCompatActivity {
 
     public static Activity activity;
 
-    public static final String FRAGMENT_DIALOG = "dialog";
-
     private static final Flash[] FLASH_OPTIONS = {
-
             Flash.OFF,
             Flash.ON,
             Flash.AUTO
     };
 
     private static final int[] FLASH_ICONS = {
-            R.drawable.ic_flash_auto,
             R.drawable.ic_flash_off,
             R.drawable.ic_flash_on,
+            R.drawable.ic_flash_auto
     };
 
     private int mCurrentFlash;

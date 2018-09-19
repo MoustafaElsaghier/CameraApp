@@ -11,8 +11,8 @@ public class SharedPreferencesUtilities {
     private static SharedPreferences preferences;
 
     private static SharedPreferencesUtilities utilities;
-    public static final String pinchKey = "pinch";
-    public static final String flashKey = "flash";
+    private static final String pinchKey = "pinch";
+    private static final String flashKey = "flash";
 
     @SuppressLint("CommitPrefEdits")
     private SharedPreferencesUtilities(Context context) {

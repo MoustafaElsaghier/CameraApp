@@ -107,10 +107,15 @@ public class CaptureVideo extends AppCompatActivity {
                         public void run() {
                             try {
                                 Thread.sleep(500);
-                                Model_Video modelVideo = fn_video();
+                                final Model_Video modelVideo = fn_video();
 
                                 if (modelVideo != null)
-                                    Glide.with(CaptureVideo.this).load(modelVideo.getStr_thumb()).into(lastImage);
+                                    lastImage.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Glide.with(CaptureVideo.this).load(modelVideo.getStr_thumb()).into(lastImage);
+                                        }
+                                    });
                             } catch (InterruptedException ignored) {
                             }
                         }
