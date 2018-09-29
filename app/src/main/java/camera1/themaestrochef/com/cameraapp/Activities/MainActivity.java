@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.otaliastudios.cameraview.CameraListener;
+import com.otaliastudios.cameraview.CameraUtils;
 import com.otaliastudios.cameraview.CameraView;
 import com.otaliastudios.cameraview.Facing;
 import com.otaliastudios.cameraview.Flash;
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         activity = this;
         ButterKnife.bind(this);
 
+
         //Hide notificationBar
         UiUtilise.hideSystemBar(this);
         UiUtilise.hideToolBar(this);
@@ -98,11 +101,14 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        if (savedInstanceState != null && savedInstanceState.getString(CAMERA_FACING_MODE) == CAMERA_MODE_FRONT) {
-            mCameraView.setFacing(Facing.FRONT);
+        if (savedInstanceState != null) {
+            String mode = savedInstanceState.getString(CAMERA_FACING_MODE);
+            if (mode != null)
+                if (mode.equals(CAMERA_MODE_FRONT))
+                    mCameraView.setFacing(Facing.FRONT);
+
         }
-
-
+        AdsUtilities.initAds(mAdView);
     }
 
     private void initIcons() {
@@ -123,36 +129,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveImg(final byte[] jpeg) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
-                if (mCameraView.getFacing() == Facing.FRONT)
-                    bitmap = ImageHelper.flipImage(bitmap);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (PermissionUtilities.checkAndRequestPermissions(MainActivity.this)) {
 
-                        final String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
-                        if (imgPath != null)
-                            lastImage.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Glide.with(MainActivity.this).load(imgPath).into(lastImage);
-                                }
-                            });
-                    }
-                } else {
-                    final String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
-                    if (imgPath != null)
-                        lastImage.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+        CameraUtils.decodeBitmap(jpeg, new CameraUtils.BitmapCallback() {
+            @Override
+            public void onBitmapReady(final Bitmap bitmap) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (PermissionUtilities.checkAndRequestPermissions(MainActivity.this)) {
+
+                                final String imgPath = CapturePhotoUtils.insertImage
+                                        (getContentResolver(), mCameraView.getFacing() == Facing
+                                                        .FRONT ? ImageHelper.flipImage(bitmap) : bitmap,
+                                                "Captured Image", "Image Description");
+                                if (imgPath != null)
+                                    lastImage.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                                        }
+                                    });
                             }
-                        });
-                }
+                        } else {
+                            final String imgPath = CapturePhotoUtils.insertImage(getContentResolver(), bitmap, "Captured Image", "Image Description");
+                            if (imgPath != null)
+                                lastImage.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                                    }
+                                });
+                        }
+                    }
+                }).start();
             }
-        }).start();
+        });
+
     }
 
     @Override
@@ -167,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
             else
                 lastImage.setVisibility(View.GONE);
         }
-        AdsUtilities.initAds(mAdView);
     }
 
     @Override
@@ -177,23 +189,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        mAdView.setVisibility(View.GONE);
-    }
-
-    @Override
     protected void onPause() {
         mCameraView.stop();
         super.onPause();
     }
 
-
-    long bb;
-
     @OnClick(R.id.take_picture)
     public void capturePic() {
-        bb = System.currentTimeMillis();
         if (mCameraView != null)
             mCameraView.capturePicture();
     }

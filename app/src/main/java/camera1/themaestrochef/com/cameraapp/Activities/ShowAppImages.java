@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.google.android.gms.ads.AdView;
+import com.otaliastudios.cameraview.CameraUtils;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,9 @@ public class ShowAppImages extends AppCompatActivity {
         ButterKnife.bind(this);
         UiUtilise.hideToolBar(this);
         UiUtilise.hideSystemBar(this);
+
+        AdsUtilities.initAds(mAdView);
+
     }
 
     @Override
@@ -47,8 +51,6 @@ public class ShowAppImages extends AppCompatActivity {
         super.onResume();
         // call in onResume so that if he deletes image from gallery
         initAppImages();
-        AdsUtilities.initAds(mAdView);
-
     }
 
     private void initAppImages() {
@@ -87,9 +89,4 @@ public class ShowAppImages extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mAdView.setVisibility(View.GONE);
-    }
 }

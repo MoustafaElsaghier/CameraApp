@@ -94,9 +94,15 @@ public class CaptureVideo extends AppCompatActivity {
             });
         }
 
-        if (savedInstanceState != null && savedInstanceState.getString(CAMERA_FACING_MODE) == CAMERA_MODE_FRONT) {
-            mCameraView.setFacing(Facing.FRONT);
+        if (savedInstanceState != null) {
+            String mode = savedInstanceState.getString(CAMERA_FACING_MODE);
+            if (mode != null)
+                if (mode.equals(CAMERA_MODE_FRONT))
+                    mCameraView.setFacing(Facing.FRONT);
+
         }
+
+        AdsUtilities.initAds(mAdView);
 
     }
 
@@ -135,7 +141,6 @@ public class CaptureVideo extends AppCompatActivity {
             if (modelVideo != null)
                 Glide.with(this).load(modelVideo.getStr_thumb()).into(lastImage);
         }
-        AdsUtilities.initAds(mAdView);
     }
 
     @Override
@@ -256,12 +261,6 @@ public class CaptureVideo extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mAdView.setVisibility(View.GONE);
     }
 
     private void updateLastVideo(final int time) {

@@ -47,6 +47,8 @@ public class ShowAppVideos extends AppCompatActivity {
         ButterKnife.bind(this);
         UiUtilise.hideToolBar(this);
         UiUtilise.hideSystemBar(this);
+        AdsUtilities.initAds(mAdView);
+
     }
 
     private void init() {
@@ -84,7 +86,6 @@ public class ShowAppVideos extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         init();
-        AdsUtilities.initAds(mAdView);
     }
 
     public void fn_video() {
@@ -154,9 +155,4 @@ public class ShowAppVideos extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mAdView.setVisibility(View.GONE);
-    }
 }

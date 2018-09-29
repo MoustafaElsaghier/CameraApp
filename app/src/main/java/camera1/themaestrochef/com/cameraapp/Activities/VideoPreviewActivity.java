@@ -63,12 +63,10 @@ public class VideoPreviewActivity extends AppCompatActivity {
                 playVideo();
             }
         });
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+
         AdsUtilities.initAds(mAdView);
+
     }
 
     void playVideo() {
@@ -76,9 +74,4 @@ public class VideoPreviewActivity extends AppCompatActivity {
         videoView.start();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mAdView.setVisibility(View.GONE);
-    }
 }

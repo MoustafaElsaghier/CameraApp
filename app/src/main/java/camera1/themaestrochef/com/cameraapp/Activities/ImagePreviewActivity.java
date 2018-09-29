@@ -32,18 +32,7 @@ public class ImagePreviewActivity extends AppCompatActivity {
 
         String mPath = getIntent().getStringExtra("imagePath");
         Glide.with(this).load(mPath).into(imageView);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         AdsUtilities.initAds(mAdView);
 
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mAdView.setVisibility(View.GONE);
     }
 }
