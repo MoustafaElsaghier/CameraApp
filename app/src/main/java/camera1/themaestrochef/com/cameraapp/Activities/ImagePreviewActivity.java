@@ -54,6 +54,7 @@ public class ImagePreviewActivity extends AppCompatActivity {
         ArrayList<String> imagesPaths = getAllShownImagesPath();
         adapter = new ViewPageAdapter(imagesPaths, this);
         pager.setAdapter(adapter);
+
     }
 
     final ArrayList<String> listOfAllImages = new ArrayList<>();
