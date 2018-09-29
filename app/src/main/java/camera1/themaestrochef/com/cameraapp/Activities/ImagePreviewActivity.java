@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +34,7 @@ public class ImagePreviewActivity extends AppCompatActivity {
 
     @BindView(R.id.adView)
     AdView mAdView;
+    private String mPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +44,19 @@ public class ImagePreviewActivity extends AppCompatActivity {
         UiUtilise.hideToolBar(this);
         ButterKnife.bind(this);
 
-        String mPath = getIntent().getStringExtra("imagePath");
-//        Glide.with(this).load(mPath).into(imageView);
+        mPath = getIntent().getStringExtra("imagePath");
+
+        //        Glide.with(this).load(mPath).into(imageView);
         AdsUtilities.initAds(mAdView);
 
+    }
+
+    // method to get the position of clicked image in previous screen ( all small images screen)
+    private int getOpenedImageIndex() {
+        for (int i = 0; i < listOfAllImages.size(); i++)
+            if (listOfAllImages.get(i).equalsIgnoreCase(mPath))
+                return i;
+        return -1;
     }
 
     @Override
@@ -53,7 +64,12 @@ public class ImagePreviewActivity extends AppCompatActivity {
         super.onResume();
         ArrayList<String> imagesPaths = getAllShownImagesPath();
         adapter = new ViewPageAdapter(imagesPaths, this);
+        int index = getOpenedImageIndex();
         pager.setAdapter(adapter);
+        // in case of index != -1 that means it found the image URL (always true but for make sure)
+        // move to that image
+        if (index != -1)
+            pager.setCurrentItem(index);
 
     }
 
