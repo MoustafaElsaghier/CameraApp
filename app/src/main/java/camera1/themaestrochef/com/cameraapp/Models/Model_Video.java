@@ -1,4 +1,4 @@
-package camera1.themaestrochef.com.cameraapp.Utilities;
+package camera1.themaestrochef.com.cameraapp.Models;
 
 
 public class Model_Video {

@@ -30,10 +30,6 @@ public class ShowAppImages extends AppCompatActivity {
     @BindView(R.id.adView)
     AdView mAdView;
 
-    private Cursor externalCursor;
-    private Cursor internalCursor;
-    private int column_index_data;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,21 +62,21 @@ public class ShowAppImages extends AppCompatActivity {
 
     String orderBy = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC";
 
-    private ArrayList<String> getAllShownImagesPath() {
 
+    private ArrayList<String> getAllShownImagesPath() {
         if (PermissionUtilities.checkAndRequestPermissions(this))
             loadImages();
         return listOfAllImages;
     }
 
     private void loadImages() {
-        externalCursor = getContentResolver().query(
+        Cursor externalCursor = getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null, null, null, orderBy);
-        internalCursor = getContentResolver().query(
+        Cursor internalCursor = getContentResolver().query(
                 MediaStore.Images.Media.INTERNAL_CONTENT_URI,
                 null, null, null, orderBy);
-        column_index_data = externalCursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        int column_index_data = externalCursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
         while (externalCursor.moveToNext()) {
             listOfAllImages.add(externalCursor.getString(column_index_data));
         }

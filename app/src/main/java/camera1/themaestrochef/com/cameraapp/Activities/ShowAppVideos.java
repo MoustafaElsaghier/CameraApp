@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 
 import com.google.android.gms.ads.AdView;
 
@@ -23,7 +22,7 @@ import butterknife.ButterKnife;
 import camera1.themaestrochef.com.cameraapp.Adapters.VideoAdapter;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.AdsUtilities;
-import camera1.themaestrochef.com.cameraapp.Utilities.Model_Video;
+import camera1.themaestrochef.com.cameraapp.Models.Model_Video;
 import camera1.themaestrochef.com.cameraapp.Utilities.PermissionUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 
