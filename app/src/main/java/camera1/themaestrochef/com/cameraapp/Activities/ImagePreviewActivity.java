@@ -117,35 +117,18 @@ public class ImagePreviewActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.twitter_share)
+    @OnClick(R.id.share_btn)
     public void shareTwitter() {
 
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        Intent shareIntent = new Intent();
         Uri photoURI = FileProvider.getUriForFile(this, "com.themaestrochef.camera1",
                 new File(mPath));
 
+        shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_STREAM, photoURI);
         shareIntent.setType("image/*");
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        PackageManager packManager = getPackageManager();
-        List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(shareIntent, PackageManager.MATCH_DEFAULT_ONLY);
-
-        boolean resolved = false;
-        for (ResolveInfo resolveInfo : resolvedInfoList) {
-            if (resolveInfo.activityInfo.packageName.equals("com.twitter.android")) {
-                shareIntent.setClassName(
-                        resolveInfo.activityInfo.packageName,
-                        resolveInfo.activityInfo.name);
-                resolved = true;
-                break;
-            }
-        }
-        if (resolved) {
-            startActivity(shareIntent);
-        } else {
-            Toast.makeText(this, "Twitter app isn't found", Toast.LENGTH_LONG).show();
-        }
+        startActivity(Intent.createChooser(shareIntent, "Share Image with ..."));
 
     }
 }
