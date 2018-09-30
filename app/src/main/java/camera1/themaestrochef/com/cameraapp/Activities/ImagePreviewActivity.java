@@ -2,6 +2,8 @@ package camera1.themaestrochef.com.cameraapp.Activities;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -115,22 +118,34 @@ public class ImagePreviewActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.twitter_share)
-    public void shareTwitter(){
+    public void shareTwitter() {
 
-        try {
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            Uri photoURI = FileProvider.getUriForFile(this, "com.themaestrochef.camera1",
-                    new File(mPath));
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        Uri photoURI = FileProvider.getUriForFile(this, "com.themaestrochef.camera1",
+                new File(mPath));
 
-            shareIntent.setClassName("com.twitter.android", "com.twitter.android.PostActivity");
-            shareIntent.putExtra(Intent.EXTRA_STREAM, photoURI);
-            shareIntent.setType("image/*");
-            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, photoURI);
+        shareIntent.setType("image/*");
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-            startActivity(shareIntent);
+        PackageManager packManager = getPackageManager();
+        List<ResolveInfo> resolvedInfoList = packManager.queryIntentActivities(shareIntent, PackageManager.MATCH_DEFAULT_ONLY);
 
-        } catch (final ActivityNotFoundException e) {
-            Toast.makeText(this, "You don't seem to have twitter installed on this device", Toast.LENGTH_SHORT).show();
+        boolean resolved = false;
+        for (ResolveInfo resolveInfo : resolvedInfoList) {
+            if (resolveInfo.activityInfo.packageName.equals("com.twitter.android")) {
+                shareIntent.setClassName(
+                        resolveInfo.activityInfo.packageName,
+                        resolveInfo.activityInfo.name);
+                resolved = true;
+                break;
+            }
         }
+        if (resolved) {
+            startActivity(shareIntent);
+        } else {
+            Toast.makeText(this, "Twitter app isn't found", Toast.LENGTH_LONG).show();
+        }
+
     }
 }
