@@ -40,33 +40,39 @@
 
     <ImageView
         android:id="@+id/insta_share"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:padding="8dp"
         ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintTop_toTopOf="@+id/imageViewer"
-        ads:srcCompat="@mipmap/ic_launcher_round" />
+        ads:srcCompat="@drawable/ic_insta"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/facebook_share"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
+        android:padding="8dp"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintTop_toTopOf="parent"
-        ads:srcCompat="@mipmap/ic_launcher_round" />
+        ads:srcCompat="@drawable/ic_facebook"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/twitter_share"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:padding="8dp"
         ads:layout_constraintEnd_toStartOf="@+id/facebook_share"
         ads:layout_constraintStart_toEndOf="@+id/insta_share"
         ads:layout_constraintTop_toTopOf="parent"
-        ads:srcCompat="@mipmap/ic_launcher_round" />
+        ads:srcCompat="@drawable/ic_twitter"
+        tools:ignore="ContentDescription" />
 </android.support.constraint.ConstraintLayout>
