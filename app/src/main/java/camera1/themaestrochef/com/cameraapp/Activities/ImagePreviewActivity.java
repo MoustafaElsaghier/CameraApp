@@ -1,21 +1,32 @@
 package camera1.themaestrochef.com.cameraapp.Activities;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import camera1.themaestrochef.com.cameraapp.Adapters.ViewPageAdapter;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.AdsUtilities;
@@ -23,9 +34,6 @@ import camera1.themaestrochef.com.cameraapp.Utilities.PermissionUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 
 public class ImagePreviewActivity extends AppCompatActivity {
-
-//    @BindView(R.id.app_image)
-//    ImageView imageView;
 
     @BindView(R.id.imageViewer)
     ViewPager pager;
@@ -35,6 +43,10 @@ public class ImagePreviewActivity extends AppCompatActivity {
     @BindView(R.id.adView)
     AdView mAdView;
     private String mPath;
+
+    public void setmPath(String mPath) {
+        this.mPath = mPath;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
