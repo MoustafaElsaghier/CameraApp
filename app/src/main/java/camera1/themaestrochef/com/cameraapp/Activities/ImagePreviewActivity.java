@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -113,4 +114,23 @@ public class ImagePreviewActivity extends AppCompatActivity {
         }
     }
 
+    @OnClick(R.id.twitter_share)
+    public void shareTwitter(){
+
+        try {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            Uri photoURI = FileProvider.getUriForFile(this, "com.themaestrochef.camera1",
+                    new File(mPath));
+
+            shareIntent.setClassName("com.twitter.android", "com.twitter.android.PostActivity");
+            shareIntent.putExtra(Intent.EXTRA_STREAM, photoURI);
+            shareIntent.setType("image/*");
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            startActivity(shareIntent);
+
+        } catch (final ActivityNotFoundException e) {
+            Toast.makeText(this, "You don't seem to have twitter installed on this device", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

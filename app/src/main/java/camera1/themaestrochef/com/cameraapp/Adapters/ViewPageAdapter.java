@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import camera1.themaestrochef.com.cameraapp.Activities.ImagePreviewActivity;
 import camera1.themaestrochef.com.cameraapp.R;
 
 public class ViewPageAdapter extends PagerAdapter {
@@ -50,7 +51,7 @@ public class ViewPageAdapter extends PagerAdapter {
         ImageView imageView = itemView.findViewById(R.id.imageView);
 
         Glide.with(activity).load(mPaths.get(position)).into(imageView);
-
+//        ((ImagePreviewActivity) activity).setmPath(mPaths.get(position));
         container.addView(itemView);
         return itemView;
     }
