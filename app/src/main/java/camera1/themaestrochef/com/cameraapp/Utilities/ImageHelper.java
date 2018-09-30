@@ -94,6 +94,7 @@ public class ImageHelper {
 
         // Move the watermark to the bottom right corner
 //        matrix.postTranslate(w - r.width(), h - r.height());
+//        Move the watermark to the top left corner
         matrix.postTranslate(50, 50);
 
         // Draw the watermark

@@ -3,8 +3,6 @@ package camera1.themaestrochef.com.cameraapp.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,9 +19,6 @@ import com.otaliastudios.cameraview.Facing;
 import com.otaliastudios.cameraview.Flash;
 import com.otaliastudios.cameraview.Gesture;
 import com.otaliastudios.cameraview.GestureAction;
-import com.vinaygaba.rubberstamp.RubberStamp;
-import com.vinaygaba.rubberstamp.RubberStampConfig;
-import com.vinaygaba.rubberstamp.RubberStampPosition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
