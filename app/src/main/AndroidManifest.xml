@@ -24,7 +24,7 @@
             android:value="@string/APP_AD_ID" />
 
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".Activities.CaptureImage"
             android:label="@string/app_name"
 
             android:theme="@style/AppTheme">

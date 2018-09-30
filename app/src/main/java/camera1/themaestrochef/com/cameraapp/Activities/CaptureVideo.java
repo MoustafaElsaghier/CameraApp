@@ -258,7 +258,7 @@ public class CaptureVideo extends AppCompatActivity {
 
     @OnClick(R.id.imageView)
     public void openCamera(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, CaptureImage.class);
         startActivity(intent);
         finish();
     }

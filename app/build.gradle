@@ -28,6 +28,8 @@ dependencies {
     implementation 'com.android.support:exifinterface:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
+    // Watermark Lib
+    implementation 'com.vinaygaba:rubberstamp:1.0.0'
     //CameraView Lib
     implementation 'com.otaliastudios:cameraview:1.6.0'
 

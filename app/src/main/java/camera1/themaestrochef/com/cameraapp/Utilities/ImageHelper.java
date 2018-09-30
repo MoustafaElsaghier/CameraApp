@@ -83,16 +83,19 @@ public class ImageHelper {
         c.drawBitmap(source, 0, 0, paint);
         // Load the watermark
         watermark = BitmapFactory.decodeResource(res, R.mipmap.ic_launcher);
-        // Scale the watermark to be approximately 40% of the source image height
-//        scale = (float) (((float) h * 0.40) / (float) watermark.getHeight());
+        // Scale the watermark to be approximately 15% of the source image height
+        scale = (float) (((float) h * 0.15) / (float) watermark.getHeight());
 //         Create the matrix
         matrix = new Matrix();
-//        matrix.postScale(scale, scale);
+        matrix.postScale(scale, scale);
         // Determine the post-scaled size of the watermark
         r = new RectF(0, 0, watermark.getWidth(), watermark.getHeight());
         matrix.mapRect(r);
+
         // Move the watermark to the bottom right corner
-        matrix.postTranslate(w - r.width(), h - r.height());
+//        matrix.postTranslate(w - r.width(), h - r.height());
+        matrix.postTranslate(50, 50);
+
         // Draw the watermark
         c.drawBitmap(watermark, matrix, paint);
         // Free up the bitmap memory

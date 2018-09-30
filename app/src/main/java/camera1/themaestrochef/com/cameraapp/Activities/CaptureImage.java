@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraUtils;
@@ -23,6 +21,9 @@ import com.otaliastudios.cameraview.Facing;
 import com.otaliastudios.cameraview.Flash;
 import com.otaliastudios.cameraview.Gesture;
 import com.otaliastudios.cameraview.GestureAction;
+import com.vinaygaba.rubberstamp.RubberStamp;
+import com.vinaygaba.rubberstamp.RubberStampConfig;
+import com.vinaygaba.rubberstamp.RubberStampPosition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +36,7 @@ import camera1.themaestrochef.com.cameraapp.Utilities.PermissionUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.SharedPreferencesUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.UiUtilise;
 
-public class MainActivity extends AppCompatActivity {
+public class CaptureImage extends AppCompatActivity {
 
     private static final String CAMERA_FACING_MODE = "camera_facing_mode";
     private static final String CAMERA_MODE_FRONT = "FRONT";
@@ -137,17 +138,23 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (PermissionUtilities.checkAndRequestPermissions(MainActivity.this)) {
+                            if (PermissionUtilities.checkAndRequestPermissions(CaptureImage.this)) {
+
+                                Bitmap waterMarkedImage = ImageHelper.addWatermark
+                                        (getResources(),
+                                                mCameraView.getFacing() == Facing.FRONT
+                                                        ? ImageHelper.flipImage(bitmap)
+                                                        : bitmap);
 
                                 final String imgPath = CapturePhotoUtils.insertImage
-                                        (getContentResolver(), mCameraView.getFacing() == Facing
-                                                        .FRONT ? ImageHelper.flipImage(bitmap) : bitmap,
+                                        (getContentResolver(),
+                                                waterMarkedImage,
                                                 "Captured Image", "Image Description");
                                 if (imgPath != null)
                                     lastImage.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                                            Glide.with(CaptureImage.this).load(imgPath).into(lastImage);
                                         }
                                     });
                             }
@@ -157,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                                 lastImage.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Glide.with(MainActivity.this).load(imgPath).into(lastImage);
+                                        Glide.with(CaptureImage.this).load(imgPath).into(lastImage);
                                     }
                                 });
                         }
@@ -174,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
         mCameraView.start();
         if (PermissionUtilities.checkAndRequestPermissions(this)) {
-            Bitmap bitmap = ImageHelper.getLastTakenImage(MainActivity.this);
+            Bitmap bitmap = ImageHelper.getLastTakenImage(CaptureImage.this);
             if (bitmap != null)
                 lastImage.setImageBitmap(bitmap);
             else
