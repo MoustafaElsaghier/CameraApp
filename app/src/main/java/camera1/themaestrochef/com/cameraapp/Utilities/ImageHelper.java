@@ -9,10 +9,16 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,7 +71,7 @@ public class ImageHelper {
     /**
      * Adds a watermark on the given image.
      */
-    public static Bitmap addWatermark(Resources res, Bitmap source) {
+    public static Bitmap addWatermark(Resources res, Bitmap source,Context context) {
         int w, h;
         Canvas c;
         Paint paint;
@@ -82,7 +88,14 @@ public class ImageHelper {
         c = new Canvas(bmp);
         c.drawBitmap(source, 0, 0, paint);
         // Load the watermark
-        watermark = BitmapFactory.decodeResource(res, R.mipmap.ic_launcher);
+//        watermark = BitmapFactory.decodeResource(context.getResources(), R.mipmap
+//                .ic_launcher);
+
+//        watermark= BitmapFactory.decodeResource( context.getResources(), R.drawable.ic_camera);
+        watermark=getBitmapFromVectorDrawable(context,R.mipmap.ic_launcher);
+
+//        Drawable vectorDrawable = VectorDrawableCompat.create(res, R.mipmap.ic_launcher,  context.getTheme());
+//        watermark = ((BitmapDrawable) vectorDrawable).getBitmap();
         // Scale the watermark to be approximately 15% of the source image height
         scale = (float) (((float) h * 0.15) / (float) watermark.getHeight());
 //         Create the matrix
@@ -102,6 +115,21 @@ public class ImageHelper {
         // Free up the bitmap memory
         watermark.recycle();
         return bmp;
+    }
+
+    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (DrawableCompat.wrap(drawable)).mutate();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
 }

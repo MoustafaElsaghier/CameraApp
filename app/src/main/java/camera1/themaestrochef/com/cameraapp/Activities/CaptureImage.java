@@ -139,7 +139,7 @@ public class CaptureImage extends AppCompatActivity {
                                         (getResources(),
                                                 mCameraView.getFacing() == Facing.FRONT
                                                         ? ImageHelper.flipImage(bitmap)
-                                                        : bitmap);
+                                                        : bitmap,getApplicationContext());
 
                                 final String imgPath = CapturePhotoUtils.insertImage
                                         (getContentResolver(),
