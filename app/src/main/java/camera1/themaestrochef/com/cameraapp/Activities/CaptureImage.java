@@ -2,6 +2,7 @@ package camera1.themaestrochef.com.cameraapp.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import camera1.themaestrochef.com.cameraapp.Adapters.SoundsAdapter;
 import camera1.themaestrochef.com.cameraapp.Models.AnimalsModel;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.AdsUtilities;
@@ -66,6 +68,7 @@ public class CaptureImage extends AppCompatActivity {
 
     @BindView(R.id.adView)
     AdView mAdView;
+    SoundsAdapter adapter;
 
     private static final int[] FLASH_ICONS = {
             R.drawable.ic_flash_off,
@@ -118,19 +121,27 @@ public class CaptureImage extends AppCompatActivity {
         mCurrentFlash = SharedPreferencesUtilities.getFlashIndex(this);
         flashIcon.setImageResource(FLASH_ICONS[mCurrentFlash]);
         mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
-
+        boolean isRotated = false;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            isRotated = true;
+        }
         LinearLayoutManager layoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-
-        ArrayList<AnimalsModel> list = new ArrayList<>();
-        list.add(new AnimalsModel(R.drawable.bell_button,R.raw.bell_sound));
-        list.add(new AnimalsModel(R.drawable.baby_button,R.raw.baby_sound));
-        list.add(new AnimalsModel(R.drawable.squeaky_toy,R.raw.squeakytoy1));
-        list.add(new AnimalsModel(R.drawable.puppy_button,R.raw.puppy_sound));
-        list.add(new AnimalsModel(R.drawable.dog_button,R.raw.dog_sound));
-        //adapter here
-
+                = new LinearLayoutManager(this, isRotated ? 1 : 0, false);
         animalsList.setLayoutManager(layoutManager);
+        ArrayList<AnimalsModel> list = new ArrayList<>();
+//        list.add(new AnimalsModel(R.drawable.bell_button,R.raw.bell_sound));
+//        list.add(new AnimalsModel(R.drawable.baby_button,R.raw.baby_sound));
+//        list.add(new AnimalsModel(R.drawable.squeaky_toy,R.raw.squeakytoy1));
+//        list.add(new AnimalsModel(R.drawable.puppy_button,R.raw.puppy_sound));
+//        list.add(new AnimalsModel(R.drawable.dog_button,R.raw.dog_sound));
+        list.add(new AnimalsModel(R.mipmap.ic_launcher, R.raw.dog_sound));
+        list.add(new AnimalsModel(R.mipmap.ic_launcher, R.raw.dog_sound));
+        list.add(new AnimalsModel(R.mipmap.ic_launcher, R.raw.dog_sound));
+        list.add(new AnimalsModel(R.mipmap.ic_launcher, R.raw.dog_sound));
+        list.add(new AnimalsModel(R.drawable.ic_stop, R.raw.dog_sound));
+        //adapter here
+        adapter = new SoundsAdapter(list, this);
+        animalsList.setAdapter(adapter);
 
         isPunchable = SharedPreferencesUtilities.getPinchValue(this);
         if (mCameraView != null) {
@@ -213,6 +224,7 @@ public class CaptureImage extends AppCompatActivity {
     @Override
     protected void onPause() {
         mCameraView.stop();
+        adapter.onPauseScreen();
         super.onPause();
     }
 

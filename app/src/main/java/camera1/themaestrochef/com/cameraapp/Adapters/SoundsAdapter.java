@@ -21,12 +21,13 @@ import static android.content.Context.AUDIO_SERVICE;
 public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder> {
 
     private ArrayList<AnimalsModel>animalsModels;
-    private MediaPlayer mPlayer;
     private Context mcontext;
+    private MediaPlayer mPlayer;
 
     public SoundsAdapter(ArrayList<AnimalsModel>animalsModels,Context mcontext){
         this.animalsModels=animalsModels;
         this.mcontext=mcontext;
+
     }
     @NonNull
     @Override
@@ -53,15 +54,15 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
         ViewHolder(View itemView) {
             super(itemView);
             animalImage=itemView.findViewById(R.id.animal_item);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            animalsModels.get(getAdapterPosition());
-            if(mPlayer.isPlaying()){
+            if(mPlayer!=null&&mPlayer.isPlaying()){
                 mPlayer.stop();
             }
-            mPlayer = MediaPlayer.create(mcontext,animalsModels.get(getAdapterPosition()).getAudioRes());
+            mPlayer = MediaPlayer.create(mcontext, animalsModels.get(getAdapterPosition()).getAudioRes());
             mPlayer.start();//Start playing the music
             makeVolumeToast();
         }
@@ -82,6 +83,11 @@ public class SoundsAdapter extends RecyclerView.Adapter<SoundsAdapter.ViewHolder
 
         if (music_volume_level < 2){
             Toast.makeText(mcontext,"Volume Might Be Too Low",Toast.LENGTH_LONG).show();// Set your own toast  message
+        }
+    }
+    public void onPauseScreen(){
+        if (mPlayer!=null){
+            mPlayer.stop();
         }
     }
 }

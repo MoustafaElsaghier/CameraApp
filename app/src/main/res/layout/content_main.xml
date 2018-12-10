@@ -9,6 +9,8 @@
     tools:context=".Activities.CaptureImage"
     tools:showIn="@layout/activity_main">
 
+
+
     <com.otaliastudios.cameraview.CameraView
         android:id="@+id/camera"
         cameraCropOutput="true"
@@ -106,7 +108,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/animals_icon"
         android:layout_width="match_parent"
@@ -114,5 +115,6 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/take_picture"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        />
 </android.support.constraint.ConstraintLayout>
