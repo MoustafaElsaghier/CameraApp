@@ -22,9 +22,12 @@ import com.otaliastudios.cameraview.Flash;
 import com.otaliastudios.cameraview.Gesture;
 import com.otaliastudios.cameraview.GestureAction;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import camera1.themaestrochef.com.cameraapp.Models.AnimalsModel;
 import camera1.themaestrochef.com.cameraapp.R;
 import camera1.themaestrochef.com.cameraapp.Utilities.AdsUtilities;
 import camera1.themaestrochef.com.cameraapp.Utilities.CapturePhotoUtils;
@@ -119,6 +122,12 @@ public class CaptureImage extends AppCompatActivity {
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
+        ArrayList<AnimalsModel> list = new ArrayList<>();
+        list.add(new AnimalsModel(R.drawable.bell_button,R.raw.bell_sound));
+        list.add(new AnimalsModel(R.drawable.baby_button,R.raw.baby_sound));
+        list.add(new AnimalsModel(R.drawable.squeaky_toy,R.raw.squeakytoy1));
+        list.add(new AnimalsModel(R.drawable.puppy_button,R.raw.puppy_sound));
+        list.add(new AnimalsModel(R.drawable.dog_button,R.raw.dog_sound));
         //adapter here
 
 

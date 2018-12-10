@@ -3,6 +3,11 @@ package camera1.themaestrochef.com.cameraapp.Models;
 public class AnimalsModel {
     int imageRes,audioRes;
 
+    public AnimalsModel(int imageRes, int audioRes) {
+        this.imageRes = imageRes;
+        this.audioRes = audioRes;
+    }
+
     public int getImageRes() {
         return imageRes;
     }
