@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -36,6 +38,8 @@ public class CaptureImage extends AppCompatActivity {
     private static final String CAMERA_FACING_MODE = "camera_facing_mode";
     private static final String CAMERA_MODE_FRONT = "FRONT";
 
+    @BindView(R.id.animals_icon)
+    RecyclerView animalsList;
     @BindView(R.id.camera)
     CameraView mCameraView;
 
@@ -112,6 +116,16 @@ public class CaptureImage extends AppCompatActivity {
         flashIcon.setImageResource(FLASH_ICONS[mCurrentFlash]);
         mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
 
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+        //adapter here
+
+
+        animalsList.setLayoutManager(layoutManager);
+
+
+
         isPunchable = SharedPreferencesUtilities.getPinchValue(this);
         if (mCameraView != null) {
             if (isPunchable) {
@@ -139,7 +153,7 @@ public class CaptureImage extends AppCompatActivity {
                                         (getResources(),
                                                 mCameraView.getFacing() == Facing.FRONT
                                                         ? ImageHelper.flipImage(bitmap)
-                                                        : bitmap,getApplicationContext());
+                                                        : bitmap, getApplicationContext());
 
                                 final String imgPath = CapturePhotoUtils.insertImage
                                         (getContentResolver(),
