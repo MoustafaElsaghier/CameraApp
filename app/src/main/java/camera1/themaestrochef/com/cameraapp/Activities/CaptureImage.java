@@ -130,10 +130,7 @@ public class CaptureImage extends AppCompatActivity {
         list.add(new AnimalsModel(R.drawable.dog_button,R.raw.dog_sound));
         //adapter here
 
-
         animalsList.setLayoutManager(layoutManager);
-
-
 
         isPunchable = SharedPreferencesUtilities.getPinchValue(this);
         if (mCameraView != null) {
