@@ -1,32 +1,18 @@
 package camera1.themaestrochef.com.cameraapp.Activities;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdView;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,8 +34,11 @@ public class ImagePreviewActivity extends AppCompatActivity {
     AdView mAdView;
     private String mPath;
 
-    public void setmPath(String mPath) {
+    int cIndex;
+
+    public void setmPath(String mPath, int cIndex) {
         this.mPath = mPath;
+        this.cIndex = cIndex;
     }
 
     @Override
@@ -78,8 +67,8 @@ public class ImagePreviewActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        ArrayList<String> imagesPaths = getAllShownImagesPath();
-        adapter = new ViewPageAdapter(imagesPaths, this);
+//        ArrayList<String> imagesPaths = getAllShownImagesPath();
+        adapter = new ViewPageAdapter(getAllShownImagesPath(), this);
         int index = getOpenedImageIndex();
         pager.setAdapter(adapter);
         // in case of index != -1 that means it found the image URL (always true but for make sure)
@@ -89,7 +78,7 @@ public class ImagePreviewActivity extends AppCompatActivity {
 
     }
 
-    final ArrayList<String> listOfAllImages = new ArrayList<>();
+    ArrayList<String> listOfAllImages = new ArrayList<>();
 
     // for getting images in order of newer ones at front of gallery.
     String orderBy = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC";
@@ -102,18 +91,13 @@ public class ImagePreviewActivity extends AppCompatActivity {
 
 
     private void loadImages() {
+        listOfAllImages = new ArrayList<>();
         Cursor externalCursor = getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, null, null, orderBy);
-        Cursor internalCursor = getContentResolver().query(
-                MediaStore.Images.Media.INTERNAL_CONTENT_URI,
                 null, null, null, orderBy);
         int column_index_data = externalCursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
         while (externalCursor.moveToNext()) {
             listOfAllImages.add(externalCursor.getString(column_index_data));
-        }
-        while (internalCursor.moveToNext()) {
-            listOfAllImages.add(internalCursor.getString(column_index_data));
         }
     }
 

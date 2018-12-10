@@ -25,6 +25,7 @@ public class ShowAppImages extends AppCompatActivity {
 
     @BindView(R.id.app_images)
     RecyclerView appImages;
+
     AppImagesAdapter adapter;
 
     @BindView(R.id.adView)
@@ -58,7 +59,7 @@ public class ShowAppImages extends AppCompatActivity {
         appImages.setAdapter(adapter);
     }
 
-    final ArrayList<String> listOfAllImages = new ArrayList<>();
+    ArrayList<String> listOfAllImages = new ArrayList<>();
 
     String orderBy = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC";
 
@@ -70,18 +71,13 @@ public class ShowAppImages extends AppCompatActivity {
     }
 
     private void loadImages() {
+        listOfAllImages = new ArrayList<>();
         Cursor externalCursor = getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                null, null, null, orderBy);
-        Cursor internalCursor = getContentResolver().query(
-                MediaStore.Images.Media.INTERNAL_CONTENT_URI,
                 null, null, null, orderBy);
         int column_index_data = externalCursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
         while (externalCursor.moveToNext()) {
             listOfAllImages.add(externalCursor.getString(column_index_data));
-        }
-        while (internalCursor.moveToNext()) {
-            listOfAllImages.add(internalCursor.getString(column_index_data));
         }
     }
 

@@ -71,7 +71,7 @@ public class ImageHelper {
     /**
      * Adds a watermark on the given image.
      */
-    public static Bitmap addWatermark(Resources res, Bitmap source,Context context) {
+    public static Bitmap addWatermark(Resources res, Bitmap source, Context context) {
         int w, h;
         Canvas c;
         Paint paint;
@@ -92,7 +92,7 @@ public class ImageHelper {
 //                .ic_launcher);
 
 //        watermark= BitmapFactory.decodeResource( context.getResources(), R.drawable.ic_camera);
-        watermark=getBitmapFromVectorDrawable(context,R.mipmap.ic_launcher);
+        watermark = getBitmapFromVectorDrawable(context, R.mipmap.ic_launcher);
 
 //        Drawable vectorDrawable = VectorDrawableCompat.create(res, R.mipmap.ic_launcher,  context.getTheme());
 //        watermark = ((BitmapDrawable) vectorDrawable).getBitmap();
